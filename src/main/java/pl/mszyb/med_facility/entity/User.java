@@ -41,16 +41,13 @@ public class User implements UserDetails {
     @NotNull
     @NotEmpty
     private Role role;
+    @ManyToMany
+    private List<ServiceType> services;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.getRoleName()));
     }
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
-
     @Override
     public String getUsername() {
         return getEmail();

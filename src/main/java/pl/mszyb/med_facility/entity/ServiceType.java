@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,6 +14,8 @@ public class ServiceType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String serviceType;
-    @ManyToOne
-    private Specialization specialization;
+    @ManyToMany(mappedBy = "servicetypes")
+    private List<Specialization> specializations;
+    @ManyToMany(mappedBy = "services")
+    private List<User> users;
 }
