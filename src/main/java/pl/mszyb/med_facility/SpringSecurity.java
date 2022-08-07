@@ -21,7 +21,10 @@ public class SpringSecurity {
                 .authorizeRequests()
                 //.antMatchers("/**").authenticated()
                 .antMatchers("/login", "/index").permitAll()
-                .antMatchers("/afterlogin").hasRole("ADMIN")
+                .antMatchers("/afterlogin").hasAnyRole("ADMIN", "USER","PHYSICIAN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/doc/**").hasRole("PHYSICIAN")
                /* .anyRequest().hasRole("admin")*/
                 .and()
                 .exceptionHandling().accessDeniedPage("/403")
