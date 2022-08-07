@@ -13,8 +13,7 @@ public class Specialization {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String specialization;
-    @OneToMany
-    @JoinColumn(name = "specialization_id")
+    @ManyToMany
     private List<ServiceType> servicetypes;
     @ManyToMany(mappedBy = "specializations")
     private List<User> user;
