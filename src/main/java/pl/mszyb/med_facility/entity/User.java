@@ -2,14 +2,18 @@ package pl.mszyb.med_facility.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.Singular;
 import net.bytebuddy.build.Plugin;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -31,15 +35,15 @@ public class User implements UserDetails {
     @NotNull
     @NotEmpty
     @Column(unique = true)
+    @Email
     private String email;
+    @Size(min = 4)
+    @NotNull
+    @NotEmpty
     private String password;
     @ManyToMany
-    @NotNull
-    @NotEmpty
     private List<Specialization> specializations;
     @ManyToOne
-    @NotNull
-    @NotEmpty
     private Role role;
     @ManyToMany
     private List<ServiceType> services;

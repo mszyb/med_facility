@@ -5,30 +5,36 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import pl.mszyb.med_facility.entity.User;
+import pl.mszyb.med_facility.service.RoleService;
 import pl.mszyb.med_facility.service.UserService;
 
 @Controller
 public class HomepageController {
 
-    private UserService userService;
+    private final UserService userService;
+    private final RoleService roleService;
 
-    public HomepageController(UserService userService) {
+    public HomepageController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
-    @GetMapping("/login")
-    public String loginPage() {
-        return "login";
+    @GetMapping("/")
+    public String showHomePage() {
+        return "index";
     }
 
-
-    @GetMapping("/afterlogin")
-    public String showLoggedHomePage(){
-        return "logged_homepage";
+    @GetMapping("/sign_in")
+    public String showRegistrationForm(Model model){
+        model.addAttribute("user", new User());
+        return "registration/registration";
     }
 
-    @GetMapping("/403")
-    public String accessDenied(){
-        return "403";
+    @PostMapping("/sign_in")
+    public String readRegistrationForm(User user){
+        user.setRole(roleService.findRoleByName("ROLE_ADMIN"));
+        userService.save(user);
+        return "registration/success_registration";
     }
+
 }
