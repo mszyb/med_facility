@@ -18,10 +18,9 @@ public class SpringSecurity {
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
                 .authorizeRequests()
                 //.antMatchers("/**").authenticated()
-                .antMatchers("/login").permitAll()
+                .antMatchers("/login", "/index").permitAll()
                 .antMatchers("/afterlogin").hasRole("ADMIN")
                /* .anyRequest().hasRole("admin")*/
                 .and()
