@@ -6,9 +6,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import pl.mszyb.med_facility.entity.Role;
 import pl.mszyb.med_facility.entity.User;
+import pl.mszyb.med_facility.service.RoleService;
 import pl.mszyb.med_facility.service.UserService;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -17,9 +20,15 @@ import java.util.NoSuchElementException;
 public class AdminController {
 
     private final UserService userService;
+    private final RoleService roleService;
 
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
+    }
+    @ModelAttribute("roles")
+    public Collection<Role> roleList(){
+        return roleService.findAll();
     }
 
     @GetMapping("/homepage")
@@ -36,9 +45,16 @@ public class AdminController {
     }
 
     @GetMapping("/homepage/edit/{id}")
-    public String showUserEditPage(@PathVariable Long id){
+    public String showUserEditPage(@PathVariable Long id, Model model){
         User user = userService.findById(id).orElseThrow(NoSuchElementException::new);
-        return "editUserForm";
+        model.addAttribute("user", user);
+        return "admin/editUserForm";
+    }
+    @ResponseBody
+    @PostMapping("/homepage/edit/{id}")
+    public String readUserEditForm(User editedUser){
+        userService.update(editedUser);
+        return "elo";
     }
 
 }

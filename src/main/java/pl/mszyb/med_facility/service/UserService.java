@@ -19,21 +19,20 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
 
 
-
     public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<User> findAll(){
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
-    public Optional<User> findById(long id){
+    public Optional<User> findById(long id) {
         return userRepository.findById(id);
     }
 
-    public Optional<User> findByEmail(String emial){
+    public Optional<User> findByEmail(String emial) {
         return userRepository.findByEmail(emial);
     }
 
@@ -41,8 +40,11 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
-
-    public Page<User> findAll(Pageable pageable){
+    public Page<User> findAll(Pageable pageable) {
         return userRepository.findAll(pageable);
+    }
+
+    public void update (User user){
+        userRepository.save(user);
     }
 }

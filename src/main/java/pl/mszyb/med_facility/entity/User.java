@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.Singular;
 import net.bytebuddy.build.Plugin;
+import org.hibernate.FetchMode;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -43,7 +44,7 @@ public class User implements UserDetails {
     private String password;
     @ManyToMany
     private List<Specialization> specializations;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Role role;
     @ManyToMany
     private List<ServiceType> services;
