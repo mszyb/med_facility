@@ -10,7 +10,7 @@ public class PhysicianController {
 
     @GetMapping("/homepage")
     public String loginPage() {
-        return  "authentication/logged_physician_homepage";
+        return  "physician/logged_physician_homepage";
     }
 
 }

@@ -1,5 +1,7 @@
 package pl.mszyb.med_facility.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.mszyb.med_facility.entity.User;
@@ -38,5 +40,9 @@ public class UserService {
     public void save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+    }
+
+    public Page<User> findAll(Pageable pageable){
+        return userRepository.findAll(pageable);
     }
 }
