@@ -19,19 +19,17 @@ public class SpringSecurity {
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                //.antMatchers("/**").authenticated()
-                .antMatchers("/login", "/index").permitAll()
+                .antMatchers("/index").permitAll()
+                .mvcMatchers("/register", "/login").anonymous()
                 .antMatchers("/afterlogin").hasAnyRole("ADMIN", "USER","PHYSICIAN")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasRole("USER")
                 .antMatchers("/doc/**").hasRole("PHYSICIAN")
-               /* .anyRequest().hasRole("admin")*/
                 .and()
                 .exceptionHandling().accessDeniedPage("/403")
                 .and()
                 .formLogin().loginPage("/login").defaultSuccessUrl("/afterlogin").failureUrl("/403").and()
-                .logout().logoutSuccessUrl("/login?test");
-
+                .logout().logoutSuccessUrl("/");
         return http.build();
     }
 

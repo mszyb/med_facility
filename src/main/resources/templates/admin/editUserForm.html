@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>edit user</title>
-</head>
+<div th:insert="header.html"/>
 <body>
 <form th:method="POST">
     <input type="email" th:field="${user.email}" th:value="${user.email}"/> <br>
@@ -20,6 +15,7 @@
     </label> <br>
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <input type="hidden" th:name="password" th:value="${user.password}">
+    <input type="hidden" th:name="created" th:value="${user.created}">
     <input type="submit" value="Edit"/><br>
 </form>
 </body>

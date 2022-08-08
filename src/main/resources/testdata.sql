@@ -1,4 +1,10 @@
 insert into roles (role_name) value ('ROLE_ADMIN'), ('ROLE_USER'), ('ROLE_PHYSICIAN');
-insert into user (email, first_name, last_name, password, phone_number, role_id) VALUE ('marcin@ge.com', 'Marcin', 'Szybki', '$2a$10$5BOlqiOpoUn330wSQXL4CexYd0Y53k5cyzcjm60OQUR0e1KO0QcN.', '123456789', 1);
-insert into user (email, first_name, last_name, password, phone_number, role_id) VALUE ('kasia@ge.com', 'Kasia', 'Marcza', '$2a$10$W.pLkYfU1Cf36OmUmxT4defY3nSx1d8TytVy2RYhgfDP9K6NntzPC', '123456789', 2);
-insert into user (email, first_name, last_name, password, phone_number, role_id) VALUE ('maria@ge.com', 'Maria', 'Domininska', '$2a$10$2N7cly0z1jF81VG/syyuQuTtGVb18AUMxfOKqTPkAQtdUlH9894i6', '123456789', 3);
+insert into user (email, first_name, last_name, password, phone_number, role_id, created) VALUE ('marcin@ge.com', 'Marcin', 'Szybki', '$2a$10$5BOlqiOpoUn330wSQXL4CexYd0Y53k5cyzcjm60OQUR0e1KO0QcN.', '123456789', 1, now());
+insert into user (email, first_name, last_name, password, phone_number, role_id, created) VALUE ('kasia@ge.com', 'Kasia', 'Marcza', '$2a$10$W.pLkYfU1Cf36OmUmxT4defY3nSx1d8TytVy2RYhgfDP9K6NntzPC', '123456789', 2, now());
+insert into user (email, first_name, last_name, password, phone_number, role_id, created) VALUE ('maria@ge.com', 'Maria', 'Domininska', '$2a$10$2N7cly0z1jF81VG/syyuQuTtGVb18AUMxfOKqTPkAQtdUlH9894i6', '123456789', 3, now());
+insert into user (email, first_name, last_name, password, phone_number, role_id, created) VALUE ('basia@ge.com', 'Basia', 'Kowalska', '$2a$10$W.pLkYfU1Cf36OmUmxT4defY3nSx1d8TytVy2RYhgfDP9K6NntzPC', '123456789', 2, now());
+insert into user (email, first_name, last_name, password, phone_number, role_id, created) VALUE ('leszek@ge.com', 'Leszek', 'Leszkowski', '$2a$10$2N7cly0z1jF81VG/syyuQuTtGVb18AUMxfOKqTPkAQtdUlH9894i6', '123456789', 3, now());
+insert into user (email, first_name, last_name, password, phone_number, role_id, created) VALUE ('artur@ge.com', 'Artur', 'Wojewodzki', '$2a$10$W.pLkYfU1Cf36OmUmxT4defY3nSx1d8TytVy2RYhgfDP9K6NntzPC', '123456789', 2, now());
+insert into user (email, first_name, last_name, password, phone_number, role_id, created) VALUE ('piotr@ge.com', 'Piotr', 'Cebulski', '$2a$10$2N7cly0z1jF81VG/syyuQuTtGVb18AUMxfOKqTPkAQtdUlH9894i6', '123456789', 3, now());
+insert into user (email, first_name, last_name, password, phone_number, role_id, created) VALUE ('albert@ge.com', 'Albert', 'Kaczkowski', '$2a$10$W.pLkYfU1Cf36OmUmxT4defY3nSx1d8TytVy2RYhgfDP9K6NntzPC', '123456789', 2, now());
+insert into user (email, first_name, last_name, password, phone_number, role_id, created) VALUE ('andrze@ge.com', 'Andrzej', 'Gudel', '$2a$10$2N7cly0z1jF81VG/syyuQuTtGVb18AUMxfOKqTPkAQtdUlH9894i6', '123456789', 3, now());

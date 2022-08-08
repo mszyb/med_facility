@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Admin dashboard</title>
-</head>
+<div th:insert="header.html"/>
 <body>
 <p>Admin dashboard</p>
 <table>
@@ -24,7 +19,7 @@
     <td><a th:href="@{http://localhost:8080/admin/homepage/edit/{id}(id = ${user.getId()})}">Edit</a></td>
     </tr>
     </tbody>
-</table> <br>
+</table>
     <a th:if="${nextPage < totalPages}" th:href="@{http://localhost:8080/admin/homepage(page=${nextPage})}">next</a> <br>
     <a th:if="${hasPrevious}" th:href="@{http://localhost:8080/admin/homepage(page=${nextPage}-2)}"> prev </a>
 </body>

@@ -2,10 +2,8 @@ package pl.mszyb.med_facility.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.Singular;
-import net.bytebuddy.build.Plugin;
-import org.hibernate.FetchMode;
-import org.hibernate.validator.constraints.Length;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,8 +13,12 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Arrays;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -48,6 +50,8 @@ public class User implements UserDetails {
     private Role role;
     @ManyToMany
     private List<ServiceType> services;
+    @CreationTimestamp
+    private Timestamp created;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
