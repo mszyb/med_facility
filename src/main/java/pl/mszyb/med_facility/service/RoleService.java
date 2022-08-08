@@ -5,6 +5,7 @@ import pl.mszyb.med_facility.entity.Role;
 import pl.mszyb.med_facility.repository.RoleRepository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,5 +20,9 @@ public class RoleService {
 
     public Role findRoleByName(String roleName){
         return roleRepository.findByRoleName(roleName);
+    }
+
+    public List<Role> findAll(){
+        return roleRepository.findAll();
     }
 }
