@@ -1,7 +1,9 @@
 <div th:insert="header.html"/>
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
-<p>Admin dashboard</p>
+
 <table>
+    <caption>Recent users:</caption>
     <thead>
     <tr>
     <th>email</th>
@@ -22,5 +24,10 @@
 </table>
     <a th:if="${nextPage < totalPages}" th:href="@{http://localhost:8080/admin/homepage(page=${nextPage})}">next</a> <br>
     <a th:if="${hasPrevious}" th:href="@{http://localhost:8080/admin/homepage(page=${nextPage}-2)}"> prev </a>
+
+<table>
+    <a th:href="@{http://localhost:8080/admin/specializations}"> <p>Modify specializations</p></a>
+</table>
+
 </body>
 </html>
