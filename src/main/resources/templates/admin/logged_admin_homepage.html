@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin dashboard</title>
+</head>
+<body>
+<p>Admin dashboard</p>
+<table>
+    <thead>
+    <tr>
+    <th>email</th>
+    <th>first name</th>
+    <th>last name</th>
+    <th>role</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+    <td th:text="${user.email}"></td>
+    <td th:text="${user.firstName}"></td>
+    <td th:text="${user.lastName}"></td>
+    <td th:text="${user.role.getRoleName()}"></td>
+    <td><a th:href="@{http://localhost:8080/admin/homepage/edit/{id}(id = ${user.getId()})}">Edit</a></td>
+    </tr>
+    </tbody>
+</table> <br>
+    <a th:if="${nextPage < totalPages}" th:href="@{http://localhost:8080/admin/homepage(page=${nextPage})}">next</a> <br>
+    <a th:if="${hasPrevious}" th:href="@{http://localhost:8080/admin/homepage(page=${nextPage}-2)}"> prev </a>
+</body>
+</html>

@@ -10,7 +10,7 @@ public class UserController {
 
     @GetMapping("/homepage")
     public String loginPage() {
-        return  "authentication/logged_user_homepage";
+        return  "user/logged_user_homepage";
     }
 
 }

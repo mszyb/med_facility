@@ -16,7 +16,7 @@ public class LoginController {
     @GetMapping("/afterlogin")
     public String showLoggedHomePage(HttpServletRequest request){
         if(request.isUserInRole("ROLE_ADMIN")){
-            return "redirect:/admin/homepage";
+            return "redirect:/admin/homepage?page=0";
         }
         if(request.isUserInRole("ROLE_USER")){
             return "redirect:/user/homepage";
