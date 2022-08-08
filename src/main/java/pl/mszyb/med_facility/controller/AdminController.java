@@ -50,11 +50,10 @@ public class AdminController {
         model.addAttribute("user", user);
         return "admin/editUserForm";
     }
-    @ResponseBody
     @PostMapping("/homepage/edit/{id}")
     public String readUserEditForm(User editedUser){
         userService.update(editedUser);
-        return "elo";
+        return "redirect:/admin/homepage?page=0";
     }
 
 }
