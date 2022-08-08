@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <span sec:authentication="name">
+        The value of the "name" property of the authentication object should appear here.
+    </span>
+    <span>
+        <form action="/logout" method="post">
+            <input type="submit" th:name="wyloguj" th:value="Wyloguj">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        </form>
+    </span>
+</head>
