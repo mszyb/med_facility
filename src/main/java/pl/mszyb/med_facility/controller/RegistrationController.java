@@ -4,9 +4,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import pl.mszyb.med_facility.Authenticator;
 import pl.mszyb.med_facility.entity.User;
 import pl.mszyb.med_facility.service.RoleService;
 import pl.mszyb.med_facility.service.UserService;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class RegistrationController {
@@ -19,9 +22,9 @@ public class RegistrationController {
     }
 
     @GetMapping("/sign_in")
-    public String showRegistrationForm(Model model) {
+    public String showRegistrationForm(HttpServletRequest request, Model model) {
         model.addAttribute("user", new User());
-        return "registration/registration";
+        return Authenticator.redirectLoggedUsersOrReturnViewName(request, "registration/registration");
     }
 
     @PostMapping("/sign_in")

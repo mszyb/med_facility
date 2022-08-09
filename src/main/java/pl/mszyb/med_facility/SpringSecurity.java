@@ -15,13 +15,13 @@ public class SpringSecurity {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/index").permitAll()
-                .mvcMatchers("/sign_in", "/login").anonymous()
-                .antMatchers("/afterlogin").hasAnyRole("ADMIN", "USER","PHYSICIAN")
+                .antMatchers("/index", "/sign_in", "/login").permitAll()
+                .antMatchers("/afterlogin").hasAnyRole("ADMIN", "USER", "PHYSICIAN")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasRole("USER")
                 .antMatchers("/doc/**").hasRole("PHYSICIAN")
