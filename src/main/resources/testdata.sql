@@ -8,6 +8,6 @@ insert into user (email, first_name, last_name, password, phone_number, role_id,
 insert into user (email, first_name, last_name, password, phone_number, role_id, created) VALUE ('piotr@ge.com', 'Piotr', 'Cebulski', '$2a$10$2N7cly0z1jF81VG/syyuQuTtGVb18AUMxfOKqTPkAQtdUlH9894i6', '123456789', 3, now());
 insert into user (email, first_name, last_name, password, phone_number, role_id, created) VALUE ('albert@ge.com', 'Albert', 'Kaczkowski', '$2a$10$W.pLkYfU1Cf36OmUmxT4defY3nSx1d8TytVy2RYhgfDP9K6NntzPC', '123456789', 2, now());
 insert into user (email, first_name, last_name, password, phone_number, role_id, created) VALUE ('andrze@ge.com', 'Andrzej', 'Gudel', '$2a$10$2N7cly0z1jF81VG/syyuQuTtGVb18AUMxfOKqTPkAQtdUlH9894i6', '123456789', 3, now());
-insert into specialization (specialization) values ('laryngologia'), ('onkologia'), ('kardiologia'), ('interna'), ('pediatria');
+insert into specialization (name) values ('laryngologia'), ('onkologia'), ('kardiologia'), ('interna'), ('pediatria');
 insert into service_type (service_type) values ('USG'),('skierowanie'),('kontrola'),('pierwsza wizyta'),('kontynuacja leczenia'),('audiometr'),('kolonoskopia');
 insert into specialization_servicetypes (specializations_id, servicetypes_id) value (1,2),(1,3),(1,4),(1,5),(1,6),(2,1),(2,3),(2,5),(3,1),(3,3),(3,4);
