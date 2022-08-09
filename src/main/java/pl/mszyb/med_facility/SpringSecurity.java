@@ -20,7 +20,7 @@ public class SpringSecurity {
         http
                 .authorizeRequests()
                 .antMatchers("/index").permitAll()
-                .mvcMatchers("/register", "/login").anonymous()
+                .mvcMatchers("/sign_in", "/login").anonymous()
                 .antMatchers("/afterlogin").hasAnyRole("ADMIN", "USER","PHYSICIAN")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasRole("USER")
