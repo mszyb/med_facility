@@ -51,10 +51,17 @@ public class AdminController {
         model.addAttribute("user", user);
         return "admin/editUserForm";
     }
+
     @PostMapping("/homepage/edit/{id}")
     public String readUserEditForm(User editedUser){
         userService.update(editedUser);
         return "redirect:/admin/homepage?page=0";
+    }
+
+    @GetMapping("/specializations")
+    public String showSpecializationsPage(Model model){
+
+        return "admin/editSpecializations";
     }
 
 }
