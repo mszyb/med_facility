@@ -11,6 +11,7 @@ import pl.mszyb.med_facility.entity.Role;
 import pl.mszyb.med_facility.entity.Specialization;
 import pl.mszyb.med_facility.entity.User;
 import pl.mszyb.med_facility.service.RoleService;
+import pl.mszyb.med_facility.service.ServiceTypeService;
 import pl.mszyb.med_facility.service.SpecializationService;
 import pl.mszyb.med_facility.service.UserService;
 
@@ -25,11 +26,13 @@ public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
     private final SpecializationService specializationService;
+    private final ServiceTypeService serviceTypeService;
 
-    public AdminController(UserService userService, RoleService roleService, SpecializationService specializationService) {
+    public AdminController(UserService userService, RoleService roleService, SpecializationService specializationService, ServiceTypeService serviceTypeService) {
         this.userService = userService;
         this.roleService = roleService;
         this.specializationService = specializationService;
+        this.serviceTypeService = serviceTypeService;
     }
 
     @ModelAttribute("roles")
@@ -54,6 +57,7 @@ public class AdminController {
     public String showUserEditPage(@PathVariable Long id, Model model) {
         User user = userService.findById(id).orElseThrow(NoSuchElementException::new);
         model.addAttribute("user", user);
+        model.addAttribute("specializations", specializationService.findAll());
         return "admin/editUserForm";
     }
 
@@ -80,6 +84,13 @@ public class AdminController {
     public String addSpecialization(Specialization newSpec) {
         specializationService.save(newSpec);
         return "redirect:/admin/specializations";
+    }
+
+    @PostMapping("/specialization_to_user_association")
+    public String showServiceToUserAssociation(Model model, @RequestParam String specializationName){
+        model.addAttribute("services", serviceTypeService.findAllBySpecializationName(specializationName));
+        model.addAttribute("specializationName", specializationName);
+        return "admin/specialization_and_services_to_user";
     }
 
 }

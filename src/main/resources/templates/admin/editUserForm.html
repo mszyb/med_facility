@@ -18,5 +18,18 @@
     <input type="hidden" th:name="created" th:value="${user.created}">
     <input type="submit" value="Edit"/><br>
 </form>
+
+<br>
+<br>
+Choose specialization:
+<form method="post" action="/admin/specialization_to_user_association">
+    <select name="specializationName">
+        <option th:each="spec: ${specializations}"
+                th:value="${spec.name}"
+                th:text="${spec.name}"/>
+    </select>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <button>associate spec with user</button>
+</form>
 </body>
 </html>
