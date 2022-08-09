@@ -1,0 +1,30 @@
+<div th:insert="header.html"/>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<table>
+    <caption>Specialization list:</caption>
+    <thead>
+    <tr>
+        <th> id</th>
+        <th>specialization name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="specialization : ${specializations}">
+        <td th:text="${specialization.id}"></td>
+        <td th:text="${specialization.name}"></td>
+        <td><a th:href="@{http://localhost:8080/admin/specialization/delete/{id}(id = ${specialization.getId()})}">remove</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<br>
+<br>
+Add new specialization: <br>
+<form method="post" action="/admin/specializations/add">
+    <input type="text" th:name="name"/> <br>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <button>add</button>
+</form>
+</body>
+</html>

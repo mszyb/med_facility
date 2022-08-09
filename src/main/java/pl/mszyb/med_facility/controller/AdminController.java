@@ -8,8 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.mszyb.med_facility.entity.Role;
+import pl.mszyb.med_facility.entity.Specialization;
 import pl.mszyb.med_facility.entity.User;
 import pl.mszyb.med_facility.service.RoleService;
+import pl.mszyb.med_facility.service.SpecializationService;
 import pl.mszyb.med_facility.service.UserService;
 
 import java.util.Collection;
@@ -22,13 +24,16 @@ public class AdminController {
 
     private final UserService userService;
     private final RoleService roleService;
+    private final SpecializationService specializationService;
 
-    public AdminController(UserService userService, RoleService roleService) {
+    public AdminController(UserService userService, RoleService roleService, SpecializationService specializationService) {
         this.userService = userService;
         this.roleService = roleService;
+        this.specializationService = specializationService;
     }
+
     @ModelAttribute("roles")
-    public Collection<Role> roleList(){
+    public Collection<Role> roleList() {
         return roleService.findAll();
     }
 
@@ -46,22 +51,35 @@ public class AdminController {
     }
 
     @GetMapping("/homepage/edit/{id}")
-    public String showUserEditPage(@PathVariable Long id, Model model){
+    public String showUserEditPage(@PathVariable Long id, Model model) {
         User user = userService.findById(id).orElseThrow(NoSuchElementException::new);
         model.addAttribute("user", user);
         return "admin/editUserForm";
     }
 
     @PostMapping("/homepage/edit/{id}")
-    public String readUserEditForm(User editedUser){
+    public String readUserEditForm(User editedUser) {
         userService.update(editedUser);
         return "redirect:/admin/homepage?page=0";
     }
 
     @GetMapping("/specializations")
-    public String showSpecializationsPage(Model model){
+    public String showSpecializationsPage(Model model) {
+        model.addAttribute("specializations", specializationService.findAll());
+        model.addAttribute("newSpec", new Specialization());
+        return "admin/specializations";
+    }
 
-        return "admin/editSpecializations";
+    @GetMapping("/specialization/delete/{id}")
+    public String deleteSpecialization(@PathVariable long id) {
+        specializationService.remove(id);
+        return "redirect:/admin/specializations";
+    }
+
+    @PostMapping("/specializations/add")
+    public String addSpecialization(Specialization newSpec) {
+        specializationService.save(newSpec);
+        return "redirect:/admin/specializations";
     }
 
 }
