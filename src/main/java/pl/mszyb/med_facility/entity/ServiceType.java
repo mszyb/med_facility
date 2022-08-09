@@ -13,7 +13,7 @@ public class ServiceType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String serviceType;
+    private String name;
     @ManyToMany(mappedBy = "servicetypes")
     private List<Specialization> specializations;
     @ManyToMany(mappedBy = "services")
