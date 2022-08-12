@@ -23,14 +23,12 @@ public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
     private final SpecializationService specializationService;
-    private final ServiceTypeService serviceTypeService;
     private final UserSpecServ_Service userSpecializationService;
 
     public AdminController(UserService userService, RoleService roleService, SpecializationService specializationService, ServiceTypeService serviceTypeService, UserSpecServ_Service userSpecializationService) {
         this.userService = userService;
         this.roleService = roleService;
         this.specializationService = specializationService;
-        this.serviceTypeService = serviceTypeService;
         this.userSpecializationService = userSpecializationService;
     }
 
@@ -57,8 +55,7 @@ public class AdminController {
         User user = userService.findById(id).orElseThrow(NoSuchElementException::new);
         model.addAttribute("user", user);
         model.addAttribute("specializations", specializationService.findAll());
-        model.addAttribute("userSpecializations", userSpecializationService.findSpecializationsForUserId(id));
-        model.addAttribute("servicesForSpecializations", userSpecializationService.findSpecializationsAndServicesForUserId(id));
+        model.addAttribute("servicesBySpecializations", userSpecializationService.findSpecializationsAndServicesForUserId(id));
         return "admin/editUserForm";
     }
 
