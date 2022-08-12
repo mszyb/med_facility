@@ -8,7 +8,8 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-public class UserSpecializationService {
+@Table(name = "user_specialization_service")
+public class UserServicesSpecializations {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
