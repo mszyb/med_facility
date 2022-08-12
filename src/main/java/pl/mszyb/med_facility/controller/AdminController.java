@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import pl.mszyb.med_facility.entity.Role;
 import pl.mszyb.med_facility.entity.Specialization;
 import pl.mszyb.med_facility.entity.User;
+import pl.mszyb.med_facility.entity.UserServicesSpecializations;
 import pl.mszyb.med_facility.service.*;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
@@ -85,9 +87,17 @@ public class AdminController {
     }
 
     @PostMapping("/specialization_to_user_association")
-    public String showServiceToUserAssociation(Model model, @RequestParam String specializationName){
-        model.addAttribute("specializationName", specializationName);
-        return "admin/specialization_and_services_to_user";
+    public String showServiceToUserAssociation(Model model, @RequestParam String specializationName, @RequestParam String userId){
+        Specialization specialization = specializationService.findByName(specializationName);
+        User user = userService.findById(Long.parseLong(userId)).orElseThrow(NoSuchElementException::new);
+        UserServicesSpecializations uss = new UserServicesSpecializations();
+        uss.setUser(user);
+        uss.setSpecialization(specialization);
+        userSpecializationService.save(uss);
+        model.addAttribute("user", user);
+        model.addAttribute("specializations", specializationService.findAll());
+        model.addAttribute("servicesBySpecializations", userSpecializationService.findSpecializationsAndServicesForUserId(Long.parseLong(userId)));
+        return "admin/editUserForm";
     }
 
 }
