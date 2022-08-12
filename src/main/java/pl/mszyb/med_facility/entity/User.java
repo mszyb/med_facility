@@ -44,12 +44,10 @@ public class User implements UserDetails {
     @NotNull
     @NotEmpty
     private String password;
-    @ManyToMany
-    private List<Specialization> specializations;
+
     @ManyToOne(fetch = FetchType.EAGER)
     private Role role;
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<ServiceType> services;
+
     @CreationTimestamp
     private Timestamp created;
 

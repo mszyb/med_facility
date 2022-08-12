@@ -14,8 +14,4 @@ public class ServiceType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @ManyToMany(mappedBy = "servicetypes")
-    private List<Specialization> specializations;
-    @ManyToMany(mappedBy = "services")
-    private List<User> users;
 }
