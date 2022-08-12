@@ -15,4 +15,15 @@ public class ServiceTypeService {
         this.serviceTypeRepository = serviceTypeRepository;
     }
 
+    public List<ServiceType> findAll(){
+        return serviceTypeRepository.findAll();
+    }
+
+    public void save(ServiceType serviceType){
+        serviceTypeRepository.save(serviceType);
+    }
+
+    public void remove(long id){
+        serviceTypeRepository.deleteById(id);
+    }
 }

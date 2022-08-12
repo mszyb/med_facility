@@ -6,27 +6,31 @@
     <caption>Recent users:</caption>
     <thead>
     <tr>
-    <th>email</th>
-    <th>first name</th>
-    <th>last name</th>
-    <th>role</th>
+        <th>email</th>
+        <th>first name</th>
+        <th>last name</th>
+        <th>role</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="user : ${users}">
-    <td th:text="${user.email}"></td>
-    <td th:text="${user.firstName}"></td>
-    <td th:text="${user.lastName}"></td>
-    <td th:text="${user.role.getRoleName()}"></td>
-    <td><a th:href="@{http://localhost:8080/admin/homepage/edit/{id}(id = ${user.getId()})}">Edit</a></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.firstName}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.role.getRoleName()}"></td>
+        <td><a th:href="@{http://localhost:8080/admin/homepage/edit/{id}(id = ${user.getId()})}">Edit</a></td>
     </tr>
     </tbody>
 </table>
-    <a th:if="${nextPage < totalPages}" th:href="@{http://localhost:8080/admin/homepage(page=${nextPage})}">next</a> <br>
-    <a th:if="${hasPrevious}" th:href="@{http://localhost:8080/admin/homepage(page=${nextPage}-2)}"> prev </a>
+<a th:if="${nextPage < totalPages}" th:href="@{http://localhost:8080/admin/homepage(page=${nextPage})}">next</a> <br>
+<a th:if="${hasPrevious}" th:href="@{http://localhost:8080/admin/homepage(page=${nextPage}-2)}"> prev </a>
 
+<br>
+<br>
+<p><b>administrative actions:</b></p>
 <table>
-    <a th:href="@{http://localhost:8080/admin/specializations}"> <p>Modify specializations</p></a>
+    <tr><a th:href="@{http://localhost:8080/admin/specializations}"><p>Modify specializations</p></a></tr>
+    <tr><a th:href="@{http://localhost:8080/admin/services}">Modify services</a></tr>
 </table>
 
 </body>

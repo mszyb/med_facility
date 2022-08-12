@@ -7,10 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.mszyb.med_facility.entity.Role;
-import pl.mszyb.med_facility.entity.Specialization;
-import pl.mszyb.med_facility.entity.User;
-import pl.mszyb.med_facility.entity.UserServicesSpecializations;
+import pl.mszyb.med_facility.entity.*;
 import pl.mszyb.med_facility.service.*;
 
 import java.util.Collection;
@@ -27,11 +24,14 @@ public class AdminController {
     private final SpecializationService specializationService;
     private final UserSpecServ_Service userSpecializationService;
 
+    private final ServiceTypeService serviceTypeService;
+
     public AdminController(UserService userService, RoleService roleService, SpecializationService specializationService, ServiceTypeService serviceTypeService, UserSpecServ_Service userSpecializationService) {
         this.userService = userService;
         this.roleService = roleService;
         this.specializationService = specializationService;
         this.userSpecializationService = userSpecializationService;
+        this.serviceTypeService = serviceTypeService;
     }
 
     @ModelAttribute("roles")
@@ -87,7 +87,7 @@ public class AdminController {
     }
 
     @PostMapping("/specialization_to_user_association")
-    public String showServiceToUserAssociation(Model model, @RequestParam String specializationName, @RequestParam String userId){
+    public String SpecializationToUserAssociation(Model model, @RequestParam String specializationName, @RequestParam String userId){
         Specialization specialization = specializationService.findByName(specializationName);
         User user = userService.findById(Long.parseLong(userId)).orElseThrow(NoSuchElementException::new);
         UserServicesSpecializations uss = new UserServicesSpecializations();
@@ -98,6 +98,32 @@ public class AdminController {
         model.addAttribute("specializations", specializationService.findAll());
         model.addAttribute("servicesBySpecializations", userSpecializationService.findSpecializationsAndServicesForUserId(Long.parseLong(userId)));
         return "admin/editUserForm";
+    }
+
+    // service typy
+    // DODAC ASOCJACJE
+    @PostMapping("/service_to_specialization_association")
+    public String userServiceToSpecializationAssociation(){
+        return "admin/editUserForm";
+    }
+
+    @GetMapping("/services")
+    public String showServicesPage(Model model) {
+        model.addAttribute("services", serviceTypeService.findAll());
+        model.addAttribute("newServiceType", new ServiceType());
+        return "admin/services";
+    }
+
+    @GetMapping("/service/delete/{id}")
+    public String deleteService(@PathVariable long id) {
+        serviceTypeService.remove(id);
+        return "redirect:/admin/services";
+    }
+
+    @PostMapping("/services/add")
+    public String addService(ServiceType newServ) {
+        serviceTypeService.save(newServ);
+        return "redirect:/admin/services";
     }
 
 }

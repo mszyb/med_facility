@@ -19,5 +19,8 @@ public class Specialization {
     @NotEmpty
     @Size(min=4)
     private String name;
+    @ManyToMany
+    @JoinTable(name = "services_specializations")
+    private List<ServiceType> serviceTypes;
 
 }
