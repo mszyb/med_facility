@@ -10,6 +10,4 @@ insert into user (email, first_name, last_name, password, phone_number, role_id,
 insert into user (email, first_name, last_name, password, phone_number, role_id, created) VALUE ('andrze@ge.com', 'Andrzej', 'Gudel', '$2a$10$2N7cly0z1jF81VG/syyuQuTtGVb18AUMxfOKqTPkAQtdUlH9894i6', '123456789', 3, now());
 insert into specialization (name) values ('laryngologia'), ('onkologia'), ('kardiologia'), ('interna'), ('pediatria');
 insert into service_type (name) values ('USG'),('skierowanie'),('kontrola'),('pierwsza wizyta'),('kontynuacja leczenia'),('audiometr'),('kolonoskopia');
-insert into specialization_servicetypes (specializations_id, servicetypes_id) value (1,2),(1,3),(1,4),(1,5),(1,6),(2,1),(2,3),(2,5),(3,1),(3,3),(3,4);
-insert into user_specializations(user_id, specializations_id) value (3,1),(3,4);
-insert into user_services(users_id, services_id) value (3,2), (3,3), (3,4), (3,5), (3,6);
+insert into user_specialization_service(service_id, specialization_id, user_id) value (3,1,3),(4,1,3),(5,1,3),(6,1,3),(2,4,3),(4,4,3),(5,4,3);

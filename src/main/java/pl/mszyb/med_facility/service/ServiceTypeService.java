@@ -15,7 +15,4 @@ public class ServiceTypeService {
         this.serviceTypeRepository = serviceTypeRepository;
     }
 
-    public List<ServiceType> findAllBySpecializationName(String name){
-        return serviceTypeRepository.findAllBySpecializationsName(name);
-    }
 }

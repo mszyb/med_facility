@@ -20,14 +20,11 @@
     <input type="submit" value="Edit"/><br>
 </form>
 specializations:
-<ul th:each="specialization : ${user.specializations}">
-    <li th:text="${specialization.name}"></li>
+<ul th:each="userSpec : ${userSpecializations}">
+    <li th:text="${userSpec.name}"></li>
 </ul>
 <br>
-service types:
-<ul th:each="serv : ${user.services}">
-    <li th:text="${serv.name}"></li>
-</ul>
+
 
 <br>
 <br>

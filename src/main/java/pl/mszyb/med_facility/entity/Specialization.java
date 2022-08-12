@@ -19,8 +19,5 @@ public class Specialization {
     @NotEmpty
     @Size(min=4)
     private String name;
-    @ManyToMany
-    private List<ServiceType> servicetypes;
-    @ManyToMany(mappedBy = "specializations")
-    private List<User> user;
+
 }

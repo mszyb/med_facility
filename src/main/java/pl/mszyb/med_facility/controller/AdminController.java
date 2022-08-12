@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.mszyb.med_facility.entity.Role;
 import pl.mszyb.med_facility.entity.Specialization;
 import pl.mszyb.med_facility.entity.User;
-import pl.mszyb.med_facility.service.RoleService;
-import pl.mszyb.med_facility.service.ServiceTypeService;
-import pl.mszyb.med_facility.service.SpecializationService;
-import pl.mszyb.med_facility.service.UserService;
+import pl.mszyb.med_facility.service.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -27,12 +24,14 @@ public class AdminController {
     private final RoleService roleService;
     private final SpecializationService specializationService;
     private final ServiceTypeService serviceTypeService;
+    private final UserSpecServ_Service userSpecializationService;
 
-    public AdminController(UserService userService, RoleService roleService, SpecializationService specializationService, ServiceTypeService serviceTypeService) {
+    public AdminController(UserService userService, RoleService roleService, SpecializationService specializationService, ServiceTypeService serviceTypeService, UserSpecServ_Service userSpecializationService) {
         this.userService = userService;
         this.roleService = roleService;
         this.specializationService = specializationService;
         this.serviceTypeService = serviceTypeService;
+        this.userSpecializationService = userSpecializationService;
     }
 
     @ModelAttribute("roles")
@@ -58,7 +57,7 @@ public class AdminController {
         User user = userService.findById(id).orElseThrow(NoSuchElementException::new);
         model.addAttribute("user", user);
         model.addAttribute("specializations", specializationService.findAll());
-
+        model.addAttribute("userSpecializations", userSpecializationService.findSpecializationsForUserId(id));
         return "admin/editUserForm";
     }
 
@@ -89,7 +88,6 @@ public class AdminController {
 
     @PostMapping("/specialization_to_user_association")
     public String showServiceToUserAssociation(Model model, @RequestParam String specializationName){
-        model.addAttribute("services", serviceTypeService.findAllBySpecializationName(specializationName));
         model.addAttribute("specializationName", specializationName);
         return "admin/specialization_and_services_to_user";
     }
