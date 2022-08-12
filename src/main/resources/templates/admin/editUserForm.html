@@ -35,7 +35,7 @@ service types by specializations:
     <br>
     <br>
 
-    add specialization:
+    associate specialization:
     <form method="post" action="/admin/specialization_to_user_association">
         <select name="specializationName">
             <option th:if="${!servicesBySpecializations.containsKey(spec)}" th:each="spec: ${specializations}"
@@ -46,6 +46,14 @@ service types by specializations:
         <input type="hidden" th:name="userId" th:value="${user.id}">
         <button>associate spec with user</button>
     </form>
+
+
+    associate service type:
+    <form method="post" action="/admin/service_to_specialization_association">
+        <select name="serviceTypeName">
+        </select>
+    </form>
+
 </div>
 </body>
 </html>
