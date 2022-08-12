@@ -1,6 +1,7 @@
 package pl.mszyb.med_facility.service;
 
 import org.springframework.stereotype.Service;
+import pl.mszyb.med_facility.entity.ServiceType;
 import pl.mszyb.med_facility.entity.Specialization;
 import pl.mszyb.med_facility.entity.UserSpecializationService;
 import pl.mszyb.med_facility.repository.SpecializationRepository;
@@ -9,6 +10,7 @@ import pl.mszyb.med_facility.repository.UserSpecializationServiceRepository;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -30,5 +32,9 @@ public class UserSpecServ_Service {
             us.ifPresent(userSpecializations::add);
         }
         return userSpecializations;
+    }
+
+    public Map<Specialization, List<ServiceType>> findSpecializationsAndServicesForUserId(Long id){
+        return userSpecializationServiceRepository.findServicesBySpecializationsForUserId(id);
     }
 }

@@ -58,6 +58,7 @@ public class AdminController {
         model.addAttribute("user", user);
         model.addAttribute("specializations", specializationService.findAll());
         model.addAttribute("userSpecializations", userSpecializationService.findSpecializationsForUserId(id));
+        model.addAttribute("servicesForSpecializations", userSpecializationService.findSpecializationsAndServicesForUserId(id));
         return "admin/editUserForm";
     }
 
