@@ -48,7 +48,7 @@ public class User implements UserDetails {
     private List<Specialization> specializations;
     @ManyToOne(fetch = FetchType.EAGER)
     private Role role;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<ServiceType> services;
     @CreationTimestamp
     private Timestamp created;
