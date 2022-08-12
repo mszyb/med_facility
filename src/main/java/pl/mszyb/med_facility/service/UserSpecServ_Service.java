@@ -45,4 +45,8 @@ public class UserSpecServ_Service {
         }
         return servicesMap;
     }
+
+    public void save(UserServicesSpecializations uss){
+        userServicesSpecializationsRepository.save(uss);
+    }
 }
