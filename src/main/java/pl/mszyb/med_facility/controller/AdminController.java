@@ -58,6 +58,7 @@ public class AdminController {
         User user = userService.findById(id).orElseThrow(NoSuchElementException::new);
         model.addAttribute("user", user);
         model.addAttribute("specializations", specializationService.findAll());
+
         return "admin/editUserForm";
     }
 

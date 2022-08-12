@@ -11,3 +11,5 @@ insert into user (email, first_name, last_name, password, phone_number, role_id,
 insert into specialization (name) values ('laryngologia'), ('onkologia'), ('kardiologia'), ('interna'), ('pediatria');
 insert into service_type (name) values ('USG'),('skierowanie'),('kontrola'),('pierwsza wizyta'),('kontynuacja leczenia'),('audiometr'),('kolonoskopia');
 insert into specialization_servicetypes (specializations_id, servicetypes_id) value (1,2),(1,3),(1,4),(1,5),(1,6),(2,1),(2,3),(2,5),(3,1),(3,3),(3,4);
+insert into user_specializations(user_id, specializations_id) value (3,1),(3,4);
+insert into user_services(users_id, services_id) value (3,2), (3,3), (3,4), (3,5), (3,6);
