@@ -11,19 +11,23 @@ public class ServiceTypeService {
 
     private final ServiceTypeRepository serviceTypeRepository;
 
-    public ServiceTypeService (ServiceTypeRepository serviceTypeRepository){
+    public ServiceTypeService(ServiceTypeRepository serviceTypeRepository) {
         this.serviceTypeRepository = serviceTypeRepository;
     }
 
-    public List<ServiceType> findAll(){
+    public List<ServiceType> findAll() {
         return serviceTypeRepository.findAll();
     }
 
-    public void save(ServiceType serviceType){
+    public void save(ServiceType serviceType) {
         serviceTypeRepository.save(serviceType);
     }
 
-    public void remove(long id){
+    public void remove(long id) {
         serviceTypeRepository.deleteById(id);
+    }
+
+    public ServiceType findByName(String name) {
+        return serviceTypeRepository.findByName(name);
     }
 }

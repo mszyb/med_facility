@@ -16,12 +16,12 @@ public class LoginController {
 
 
     @GetMapping("/afterlogin")
-    public String showLoggedHomePage(HttpServletRequest request){
+    public String showLoggedHomePage(HttpServletRequest request) {
         return Authenticator.redirectLoggedUsersOrReturnViewName(request, "redirect:/403");
     }
 
     @GetMapping("/403")
-    public String accessDenied(){
+    public String accessDenied() {
         return "authentication/403";
     }
 }

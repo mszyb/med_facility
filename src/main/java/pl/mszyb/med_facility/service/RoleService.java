@@ -14,15 +14,15 @@ public class RoleService {
 
     private final RoleRepository roleRepository;
 
-    public RoleService (RoleRepository roleRepository){
+    public RoleService(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
 
-    public Role findRoleByName(String roleName){
+    public Role findRoleByName(String roleName) {
         return roleRepository.findByRoleName(roleName);
     }
 
-    public List<Role> findAll(){
+    public List<Role> findAll() {
         return roleRepository.findAll();
     }
 }

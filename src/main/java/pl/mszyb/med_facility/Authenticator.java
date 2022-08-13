@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class Authenticator {
 
-    public static String redirectLoggedUsersOrReturnViewName(HttpServletRequest request, String viewName){
+    public static String redirectLoggedUsersOrReturnViewName(HttpServletRequest request, String viewName) {
         if (request.isUserInRole("ROLE_ADMIN")) {
             return "redirect:/admin/homepage?page=0";
         }
