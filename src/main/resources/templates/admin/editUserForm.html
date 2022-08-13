@@ -29,6 +29,7 @@ service types by specializations:
             </tr>
             <tr th:each="serlist : ${serMap?.value}">
                 <td th:text="${serlist?.name}"></td>
+                <td><a th:href="@{http://localhost:8080/admin/service_from_spec/delete(ussId=${serlist.getId()},userId=${user.getId()}, specId = ${serMap.key.id})}">remove</a>
             </tr>
         </table>
     </div>
