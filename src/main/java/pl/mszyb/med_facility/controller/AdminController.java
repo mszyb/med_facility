@@ -57,6 +57,7 @@ public class AdminController {
         User user = userService.findById(id).orElseThrow(NoSuchElementException::new);
         model.addAttribute("user", user);
         model.addAttribute("specializations", specializationService.findAll());
+        model.addAttribute("services", serviceTypeService.findAll());
         model.addAttribute("servicesBySpecializations", userSpecializationService.findSpecializationsAndServicesForUserId(id));
         return "admin/editUserForm";
     }
@@ -87,23 +88,20 @@ public class AdminController {
     }
 
     @PostMapping("/specialization_to_user_association")
-    public String SpecializationToUserAssociation(Model model, @RequestParam String specializationName, @RequestParam String userId){
+    public String SpecializationToUserAssociation(Model model, @RequestParam String specializationName, @RequestParam String userId, @RequestParam List<String> servicesNames) {
         Specialization specialization = specializationService.findByName(specializationName);
         User user = userService.findById(Long.parseLong(userId)).orElseThrow(NoSuchElementException::new);
-        UserServicesSpecializations uss = new UserServicesSpecializations();
-        uss.setUser(user);
-        uss.setSpecialization(specialization);
-        userSpecializationService.save(uss);
+        for (String name : servicesNames) {
+            UserServicesSpecializations uss = new UserServicesSpecializations();
+            uss.setUser(user);
+            uss.setSpecialization(specialization);
+            uss.setService(serviceTypeService.findByName(name));
+            userSpecializationService.save(uss);
+        }
         model.addAttribute("user", user);
         model.addAttribute("specializations", specializationService.findAll());
+        model.addAttribute("services", serviceTypeService.findAll());
         model.addAttribute("servicesBySpecializations", userSpecializationService.findSpecializationsAndServicesForUserId(Long.parseLong(userId)));
-        return "admin/editUserForm";
-    }
-
-    // service typy
-    // DODAC ASOCJACJE
-    @PostMapping("/service_to_specialization_association")
-    public String userServiceToSpecializationAssociation(){
         return "admin/editUserForm";
     }
 

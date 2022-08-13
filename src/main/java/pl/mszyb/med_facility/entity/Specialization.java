@@ -8,6 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -17,10 +18,6 @@ public class Specialization {
     private Long id;
     @NotNull
     @NotEmpty
-    @Size(min=4)
+    @Size(min = 4)
     private String name;
-    @ManyToMany
-    @JoinTable(name = "services_specializations")
-    private List<ServiceType> serviceTypes;
-
 }

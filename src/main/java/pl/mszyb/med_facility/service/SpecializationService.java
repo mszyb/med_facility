@@ -27,7 +27,7 @@ public class SpecializationService {
         specializationRepository.save(specialization);
     }
 
-    public Specialization findByName(String name){
+    public Specialization findByName(String name) {
         return specializationRepository.findByName(name);
     }
 }

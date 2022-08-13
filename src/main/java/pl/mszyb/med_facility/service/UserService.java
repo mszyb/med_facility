@@ -41,11 +41,12 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
+
     public Page<User> findAll(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
 
-    public void update (User user){
+    public void update(User user) {
         userRepository.save(user);
     }
 }
