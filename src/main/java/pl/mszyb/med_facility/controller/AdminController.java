@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.mszyb.med_facility.entity.*;
 import pl.mszyb.med_facility.service.*;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin")
@@ -87,20 +84,26 @@ public class AdminController {
     }
 
     @PostMapping("/specialization_to_user_association")
-    public String SpecializationToUserAssociation(Model model, @RequestParam String specializationName, @RequestParam String userId, @RequestParam List<String> servicesNames) {
+    public String SpecializationToUserAssociation(Model model, @RequestParam String specializationName, @RequestParam Long userId, @RequestParam List<String> servicesNames) {
         Specialization specialization = specializationService.findByName(specializationName);
-        User user = userService.findById(Long.parseLong(userId)).orElseThrow(NoSuchElementException::new);
+        User user = userService.findById(userId).orElseThrow(NoSuchElementException::new);
+        Map<Specialization, List<ServiceType>> servicesBySpecializations = userSpecializationService.findSpecializationsAndServicesForUserId(userId);
         for (String name : servicesNames) {
-            UserServicesSpecializations uss = new UserServicesSpecializations();
-            uss.setUser(user);
-            uss.setSpecialization(specialization);
-            uss.setService(serviceTypeService.findByName(name));
-            userSpecializationService.save(uss);
+            ServiceType serv = serviceTypeService.findByName(name);
+            if (!servicesBySpecializations.containsKey(specialization) || !servicesBySpecializations.get(specialization).contains(serv)) {
+                UserServicesSpecializations uss = new UserServicesSpecializations();
+                uss.setUser(user);
+                uss.setSpecialization(specialization);
+                uss.setService(serv);
+                userSpecializationService.save(uss);
+            } else {
+                model.addAttribute("serviceAlreadyAssigned", true);
+            }
         }
         model.addAttribute("user", user);
         model.addAttribute("specializations", specializationService.findAll());
         model.addAttribute("services", serviceTypeService.findAll());
-        model.addAttribute("servicesBySpecializations", userSpecializationService.findSpecializationsAndServicesForUserId(Long.parseLong(userId)));
+        model.addAttribute("servicesBySpecializations", userSpecializationService.findSpecializationsAndServicesForUserId(userId));
         return "admin/editUserForm";
     }
 
