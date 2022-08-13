@@ -23,7 +23,6 @@ public class AdminController {
     private final RoleService roleService;
     private final SpecializationService specializationService;
     private final UserSpecServ_Service userSpecializationService;
-
     private final ServiceTypeService serviceTypeService;
 
     public AdminController(UserService userService, RoleService roleService, SpecializationService specializationService, ServiceTypeService serviceTypeService, UserSpecServ_Service userSpecializationService) {
