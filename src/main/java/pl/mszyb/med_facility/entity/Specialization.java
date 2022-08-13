@@ -18,6 +18,6 @@ public class Specialization {
     private Long id;
     @NotNull
     @NotEmpty
-    @Size(min = 4)
+    @Column(unique = true)
     private String name;
 }
