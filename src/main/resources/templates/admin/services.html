@@ -1,0 +1,30 @@
+<div th:insert="header.html"/>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<table>
+    <caption>service list:</caption>
+    <thead>
+    <tr>
+        <th> id</th>
+        <th>service name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="serv : ${services}">
+        <td th:text="${serv.id}"></td>
+        <td th:text="${serv.name}"></td>
+        <td><a th:href="@{http://localhost:8080/admin/service/delete/{id}(id = ${serv.getId()})}">remove</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<br>
+<br>
+Add new service: <br>
+<form method="post" action="/admin/services/add">
+    <input type="text" th:name="name"/> <br>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <button>add</button>
+</form>
+</body>
+</html>
