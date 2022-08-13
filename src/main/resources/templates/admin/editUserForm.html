@@ -1,0 +1,56 @@
+<div th:insert="header.html"/>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<form th:method="POST" th:action="@{/admin/homepage/edit/{id}(id = ${user.id})}">
+    <input type="email" th:field="${user.email}" th:value="${user.email}"/> <br>
+    <input type="text" th:field="${user.firstName}" th:value="${user.firstName}"/><br>
+    <input type="text" th:field="${user.lastName}" th:value="${user.lastName}"/><br>
+    <input type="number" th:field="${user.phoneNumber}" th:value="${user.phoneNumber}"/><br>
+    <label>role:
+        <input type="radio" name="role"
+               th:each="role : ${roles}"
+               th:text="${role.roleName}"
+               th:value="${role.id}"
+               th:checked="${user.role.id == role.id}"
+        />
+    </label> <br>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <input type="hidden" th:name="password" th:value="${user.password}">
+    <input type="hidden" th:name="created" th:value="${user.created}">
+    <input type="submit" value="Edit"/><br>
+</form>
+<div th:if="${user.role.roleName.equals('ROLE_PHYSICIAN')}">
+service types by specializations:
+<div>
+    <div th:each="serMap : ${servicesBySpecializations}">
+        <table>
+            <tr>
+                <th th:text="${serMap.key.name}"></th>
+            </tr>
+            <tr th:each="serlist : ${serMap?.value}">
+                <td th:text="${serlist?.name}"></td>
+            </tr>
+        </table>
+    </div>
+    <br>
+    <br>
+
+    associate specialization:
+    <form method="post" action="/admin/specialization_to_user_association">
+        <select name="specializationName">
+            <option th:if="${!servicesBySpecializations.containsKey(spec)}" th:each="spec: ${specializations}"
+                    th:value="${spec.name}"
+                    th:text="${spec.name}"/>
+        </select>
+        <input type="checkbox" name="servicesNames"
+               th:each="s: ${services}"
+               th:value="${s.name}"
+               th:text="${s.name}"/>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <input type="hidden" th:name="userId" th:value="${user.id}">
+        <button>associate spec with user</button>
+    </form>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post">
+    <input type="text" name="firstName" placeholder="imię"> <br>
+    <input type="text" name="lastName" placeholder="nazwisko"><br>
+    <input type="email" name="email" placeholder="email"><br>
+    <input type="password" name="password" placeholder="hasło"><br>
+    <input type="number" name="phoneNumber" placeholder="numer telefonu"><br>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <button>Utwórz konto!</button>
+</form>
+</body>
+</html>

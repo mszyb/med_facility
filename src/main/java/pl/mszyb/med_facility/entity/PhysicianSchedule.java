@@ -1,17 +1,20 @@
 package pl.mszyb.med_facility.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @Entity
 public class PhysicianSchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long physicianId;
+    @ManyToOne
+    private User physician;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 }
