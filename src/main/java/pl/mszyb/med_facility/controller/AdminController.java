@@ -126,4 +126,16 @@ public class AdminController {
         return "redirect:/admin/services";
     }
 
+    @GetMapping("/service_from_spec/delete")
+    public String deleteServiceFromUserSpec(@RequestParam Long ussId, Model model, @RequestParam Long userId, @RequestParam Long specId){
+       UserServicesSpecializations uss = userSpecializationService.findByServiceAndSpec(ussId, specId);
+        userSpecializationService.remove(uss.getId());
+        User user = userService.findById(userId).orElseThrow(NoSuchElementException::new);
+        model.addAttribute("user", user);
+        model.addAttribute("specializations", specializationService.findAll());
+        model.addAttribute("services", serviceTypeService.findAll());
+        model.addAttribute("servicesBySpecializations", userSpecializationService.findSpecializationsAndServicesForUserId(user.getId()));
+        return "admin/editUserForm";
+    }
+
 }
