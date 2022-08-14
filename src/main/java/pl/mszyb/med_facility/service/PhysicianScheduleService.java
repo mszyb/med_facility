@@ -19,8 +19,8 @@ public class PhysicianScheduleService {
         physicianScheduleRepository.save(physicianSchedule);
     }
 
-    public List<PhysicianSchedule> findAllByPhysicianIdForNextTwoWeeks(long physicianId) {
+    public List<PhysicianSchedule> findAllByPhysicianIdForSelectedPeriod(long physicianId) {
         LocalDateTime scheduleInterval = LocalDateTime.now().plusDays(7);
-        return physicianScheduleRepository.findAllByPhysicianIdForNextTwoWeeks(physicianId, scheduleInterval, LocalDateTime.now());
+        return physicianScheduleRepository.findAllByPhysicianIdForSelectedPeriod(physicianId, scheduleInterval, LocalDateTime.now());
     }
 }

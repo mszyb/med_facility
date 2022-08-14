@@ -1,0 +1,12 @@
+<div th:insert="header.html"/>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+What service are you looking for?
+<form method="post">
+    <select name="selected_spec">
+        <option th:each="spec : ${allSpecs}" th:value="${spec.id}" th:text="${spec.name}"></option>
+    </select>
+    <button>search</button>
+</form>
+</body>
+</html>
