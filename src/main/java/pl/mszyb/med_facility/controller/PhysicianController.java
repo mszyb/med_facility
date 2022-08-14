@@ -65,5 +65,10 @@ public class PhysicianController {
         return "physician/timetable";
     }
 
+    @PostMapping("/search/active_substances")
+    public String callNFZApi(@RequestParam String searchValue){
+        String uri = "";
+
+    }
 
 }
