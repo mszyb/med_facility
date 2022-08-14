@@ -13,6 +13,9 @@ For repetitive schedule use second form.
     <button>add shift to your timetable</button>
 </form>
 
+<div th:if="${notSameDay}">
+    You can only set shift for one day. Try again
+</div>
 <!-- tu drugi formularz z liczba godzin  i zakresem DAT -> ale samych dat -> w kontrolerze przerobie to tak
 zeby wstawilo sie np codziennie od 15.08 do 18.08 8 godzin od 9 do 17 -->
 </body>

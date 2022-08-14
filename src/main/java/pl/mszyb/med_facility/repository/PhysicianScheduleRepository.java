@@ -10,5 +10,5 @@ import java.util.List;
 public interface PhysicianScheduleRepository extends JpaRepository<PhysicianSchedule, Long> {
 
     @Query("select ps from PhysicianSchedule ps where ps.physician.id = ?1 and ps.startTime < ?2 and ps.endTime>=?3")
-    List<PhysicianSchedule> findAllByPhysicianIdForNextTwoWeeks(Long physicianId, LocalDateTime toDate, LocalDateTime fromDate);
+    List<PhysicianSchedule> findAllByPhysicianIdForSelectedPeriod(Long physicianId, LocalDateTime toDate, LocalDateTime fromDate);
 }

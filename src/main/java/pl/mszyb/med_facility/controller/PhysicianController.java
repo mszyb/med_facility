@@ -11,6 +11,7 @@ import pl.mszyb.med_facility.entity.User;
 import pl.mszyb.med_facility.service.PhysicianScheduleService;
 import pl.mszyb.med_facility.service.UserService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -33,9 +34,9 @@ public class PhysicianController {
     }
 
     @ModelAttribute("currentUserSchedule")
-    public List<PhysicianSchedule> getUserSchedule(Model model){
+    public List<PhysicianSchedule> getUserSchedule(Model model) {
         User user = getCurrentUser();
-        return physicianScheduleService.findAllByPhysicianIdForNextTwoWeeks(user.getId());
+        return physicianScheduleService.findAllByPhysicianIdForSelectedPeriod(user.getId());
     }
 
     @GetMapping("/homepage")
@@ -44,16 +45,25 @@ public class PhysicianController {
     }
 
     @GetMapping("/timetable")
-    public String showManageTimetable(Model model){
+    public String showManageTimetable(Model model) {
         model.addAttribute("physicianSchedule", new PhysicianSchedule());
         return "physician/timetable";
     }
 
     @PostMapping("/timetable/add")
-    public String addNewShift(@DateTimeFormat PhysicianSchedule physicianSchedule, Model model){
-        physicianSchedule.setPhysician(getCurrentUser());
-        physicianScheduleService.save(physicianSchedule);
+    public String addNewShift(@DateTimeFormat PhysicianSchedule physicianSchedule, Model model) {
+        if (physicianSchedule.getStartTime() != null && physicianSchedule.getEndTime() != null) {
+            LocalDate startTime = physicianSchedule.getStartTime().toLocalDate();
+            LocalDate endTime = physicianSchedule.getEndTime().toLocalDate();
+            if (startTime.isEqual(endTime)) {
+                physicianSchedule.setPhysician(getCurrentUser());
+                physicianScheduleService.save(physicianSchedule);
+            } else {
+                model.addAttribute("notSameDay", true);
+            }
+        }
         return "physician/timetable";
     }
+
 
 }
