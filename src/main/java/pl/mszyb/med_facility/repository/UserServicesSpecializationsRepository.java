@@ -20,5 +20,9 @@ public interface UserServicesSpecializationsRepository extends JpaRepository<Use
     void removeById(long id);
 
     UserServicesSpecializations findByServiceIdAndSpecializationId(Long serviceId, Long specId);
+    @Query("select uss from UserServicesSpecializations uss where uss.specialization = ?1")
+    List<UserServicesSpecializations> findAllForSelectedSpecialization(Specialization specialization);
+    @Query("select uss from UserServicesSpecializations uss where uss.specialization = ?1 and uss.service = ?2")
+    List<UserServicesSpecializations> findAllForSelectedServiceAndSpecialization(Specialization specialization, ServiceType serviceType);
 }
 
