@@ -11,3 +11,4 @@ insert into user (email, first_name, last_name, password, phone_number, role_id,
 insert into specialization (name) values ('laryngologia'), ('onkologia'), ('kardiologia'), ('interna'), ('pediatria');
 insert into service_type (name) values ('USG'),('skierowanie'),('kontrola'),('pierwsza wizyta'),('kontynuacja leczenia'),('audiometr'),('kolonoskopia');
 insert into user_specialization_service(service_id, specialization_id, user_id) value (3,1,3),(4,1,3),(5,1,3),(6,1,3),(2,4,3),(4,4,3),(5,4,3);
+insert into physician_schedule (start_time, end_time, physician_id) values (TIMESTAMP('2022-08-15T09:00'), TIMESTAMP('2022-08-15T17:00'), 3),(TIMESTAMP('2022-08-16T09:00'), TIMESTAMP('2022-08-16T17:00'), 3),(TIMESTAMP('2022-08-17T15:00'), TIMESTAMP('2022-08-17T20:00'), 3),(TIMESTAMP('2022-08-18T09:00'), TIMESTAMP('2022-08-18T15:00'), 3);

@@ -1,5 +1,42 @@
 <div th:insert="header.html"/>
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
-physician homepage
+
+<!-- tu sie wyświetlą umówione wizyty ->
+przycisk do oznaczania wizyty jako "odbytej" ->
+odbyta wizyta znika z terminarza -->
+Your upcoming visits: <br><br>
+
+<!-- tu się wyświetli które terminy zostały wybrane jako dostępne-->
+You are available: <br><br>
+<div>
+    <table>
+            <tr>
+                <td>from</td>
+                <td>to</td>
+            </tr>
+        <tr th:each="shift : ${currentUserSchedule}">
+            <td th:text="${#temporals.format(shift.startTime, 'dd-MM-yyyy HH:mm')}"></td>
+            <td th:text="${#temporals.format(shift.endTime, 'dd-MM-yyyy HH:mm')}"></td>
+        </tr>
+    </table>
+
+
+</div>
+
+<!-- tu się wyświetlą linki do zmiany terminarza -->
+<a th:href="@{http://localhost:8080/doc/timetable}">Manage timetable</a><br><br>
+
+<!-- tutaj formularz do sciagania inormacji z API NFZ-->
+
+Informacje o refundacjach aptecznych:  <br><br>
+<form>
+    <input type="text" placeholder="szukaj substacji aktywnych">
+    <button>szukaj </button>
+</form>
+<form>
+    <input type="text" placeholder="szukaj nazw leków">
+    <button>szukaj</button>
+</form>
 </body>
 </html>
