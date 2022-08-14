@@ -1,0 +1,13 @@
+<div th:insert="header.html"/>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<form method="post", action="/user/reservation/search/result">
+  <select name="selectedServiceId">
+    <option th:each="serv : ${allServices}" th:value="${serv.getService().id}" th:text="${serv.getService().name}"></option>
+  </select>
+  <input type="hidden" th:name="selectedSpecId" th:value="${selectedSpecId}">
+  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+  <button>search</button>
+</form>
+</body>
+</html>

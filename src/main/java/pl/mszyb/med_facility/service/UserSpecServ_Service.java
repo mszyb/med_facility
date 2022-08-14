@@ -23,7 +23,6 @@ public class UserSpecServ_Service {
     }
 
     public List<Specialization> findSpecializationsForUserId(long id) {
-
         List<Long> identifiers = userServicesSpecializationsRepository.findSpecializationForUserId(id);
         List<Specialization> userSpecializations = new ArrayList<>();
         for (Long specId : identifiers) {
@@ -58,5 +57,13 @@ public class UserSpecServ_Service {
 
     public UserServicesSpecializations findByServiceAndSpec(long serviceId, long specId){
         return userServicesSpecializationsRepository.findByServiceIdAndSpecializationId(serviceId, specId);
+    }
+
+    public List<UserServicesSpecializations> findAllForSelectedSpecialization(Specialization spec){
+        return userServicesSpecializationsRepository.findAllForSelectedSpecialization(spec);
+    }
+
+    public List<UserServicesSpecializations> findAllForSelectedServiceAndSpecialization(Specialization spec, ServiceType serv){
+        return userServicesSpecializationsRepository.findAllForSelectedServiceAndSpecialization(spec, serv);
     }
 }

@@ -5,6 +5,7 @@ import pl.mszyb.med_facility.entity.Specialization;
 import pl.mszyb.med_facility.repository.SpecializationRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SpecializationService {
@@ -29,5 +30,9 @@ public class SpecializationService {
 
     public Specialization findByName(String name) {
         return specializationRepository.findByName(name);
+    }
+
+    public Optional<Specialization> findById(Long id){
+        return specializationRepository.findById(id);
     }
 }

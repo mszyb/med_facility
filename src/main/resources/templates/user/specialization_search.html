@@ -3,9 +3,10 @@
 <body>
 What service are you looking for?
 <form method="post">
-    <select name="selected_spec">
+    <select name="selectedSpecId">
         <option th:each="spec : ${allSpecs}" th:value="${spec.id}" th:text="${spec.name}"></option>
     </select>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <button>search</button>
 </form>
 </body>

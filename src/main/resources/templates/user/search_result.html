@@ -1,0 +1,19 @@
+<div th:insert="header.html"/>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<p>wyniki dla <span th:text="${selectedSpec.name}"/> (<span th:text="${selectedService.name}"/>):</p>
+<br>
+<table>
+    <tr>
+        <td>first name</td>
+        <td>surname</td>
+        <td>available term</td>
+    </tr>
+    <tr th:each="uss : ${filteredUserSpecServ}">
+        <td th:text="${uss.getUser().getFirstName()}"></td>
+        <td th:text="${uss.getUser().getLastName()}"></td>
+    </tr>
+
+</table>
+</body>
+</html>
