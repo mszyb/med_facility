@@ -1,5 +1,6 @@
 package pl.mszyb.med_facility.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,19 +15,12 @@ import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping("/user")
+@AllArgsConstructor
 public class UserController {
 
     private final SpecializationService specializationService;
     private final UserSpecServ_Service userSpecServService;
-
     private final ServiceTypeService serviceTypeService;
-
-
-    public UserController(SpecializationService specializationService, UserSpecServ_Service userSpecServService, ServiceTypeService serviceTypeService) {
-        this.specializationService = specializationService;
-        this.userSpecServService = userSpecServService;
-        this.serviceTypeService = serviceTypeService;
-    }
 
     @ModelAttribute("allSpecs")
     public List<Specialization> getSpecializations() {
