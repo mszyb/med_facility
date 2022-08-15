@@ -1,5 +1,6 @@
 package pl.mszyb.med_facility.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import java.util.*;
 
 @Controller
 @RequestMapping("/admin")
+@AllArgsConstructor
 public class AdminController {
 
     private final UserService userService;
@@ -21,14 +23,6 @@ public class AdminController {
     private final SpecializationService specializationService;
     private final UserSpecServ_Service userSpecializationService;
     private final ServiceTypeService serviceTypeService;
-
-    public AdminController(UserService userService, RoleService roleService, SpecializationService specializationService, ServiceTypeService serviceTypeService, UserSpecServ_Service userSpecializationService) {
-        this.userService = userService;
-        this.roleService = roleService;
-        this.specializationService = specializationService;
-        this.userSpecializationService = userSpecializationService;
-        this.serviceTypeService = serviceTypeService;
-    }
 
     @ModelAttribute("roles")
     public Collection<Role> roleList() {
