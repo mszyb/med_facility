@@ -89,14 +89,14 @@ public class PhysicianController {
     public String searchForActiveSubstances(@RequestParam String searchValue, @RequestParam String pageNum, Model model) {
         String baseUri = "https://api.nfz.gov.pl/app-stat-api-ra/active-substances?page=";
         callNFZApi(searchValue, pageNum, model, baseUri);
-        return "physician/search_result";
+        return "physician/search_result_active_substances";
     }
 
     @PostMapping("/search/medicine_products")
     public String searchForMedicineProducts(@RequestParam String searchValue, @RequestParam String pageNum, Model model) {
         String baseUri = "https://api.nfz.gov.pl/app-stat-api-ra/medicine-products?page=";
         callNFZApi(searchValue, pageNum, model, baseUri);
-        return "physician/search_result";
+        return "physician/search_result_medicine_products";
     }
 
 }
