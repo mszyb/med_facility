@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.mszyb.med_facility.entity.ServiceType;
-import pl.mszyb.med_facility.entity.Specialization;
+import pl.mszyb.med_facility.entity.*;
+import pl.mszyb.med_facility.service.PhysicianScheduleService;
 import pl.mszyb.med_facility.service.ServiceTypeService;
 import pl.mszyb.med_facility.service.SpecializationService;
 import pl.mszyb.med_facility.service.UserSpecServ_Service;
 
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -21,6 +23,7 @@ public class UserController {
     private final SpecializationService specializationService;
     private final UserSpecServ_Service userSpecServService;
     private final ServiceTypeService serviceTypeService;
+    private final PhysicianScheduleService physicianScheduleService;
 
     @ModelAttribute("allSpecs")
     public List<Specialization> getSpecializations() {
@@ -40,8 +43,8 @@ public class UserController {
     @PostMapping("/reservation/search/spec")
     public String showServiceSearchForm(@RequestParam Long selectedSpecId, Model model) {
         Specialization selectedSpec = specializationService.findById(selectedSpecId).orElseThrow(NoSuchElementException::new);
-        model.addAttribute("allServices", userSpecServService.findAllForSelectedSpecialization(selectedSpec));
-        model.addAttribute("selectedSpecId", selectedSpecId);
+        model.addAttribute("allServices", userSpecServService.findAllServicesForSelectedSpecialization(selectedSpec));
+        model.addAttribute("selectedSpec", specializationService.findById(selectedSpecId).orElseThrow(NoSuchElementException::new));
         return "user/service_search";
     }
 
@@ -49,9 +52,16 @@ public class UserController {
     public String showSearchResult(@RequestParam Long selectedServiceId, @RequestParam Long selectedSpecId, Model model) {
         Specialization selectedSpec = specializationService.findById(selectedSpecId).orElseThrow(NoSuchElementException::new);
         ServiceType selectedService = serviceTypeService.findById(selectedServiceId).orElseThrow(NoSuchElementException::new);
-        model.addAttribute("filteredUserSpecServ", userSpecServService.findAllForSelectedServiceAndSpecialization(selectedSpec, selectedService));
+        List<UserServicesSpecializations> filteredUserSpecServ = userSpecServService.findAllForSelectedServiceAndSpecialization(selectedSpec, selectedService);
+        model.addAttribute("filteredUserSpecServ", filteredUserSpecServ);
         model.addAttribute("selectedSpec", selectedSpec);
         model.addAttribute("selectedService", selectedService);
+        List<List<ZonedDateTime>> availableUsersSlots = new ArrayList<>();
+        for(UserServicesSpecializations uss : filteredUserSpecServ){
+            long currentPhysicianId = uss.getUser().getId();
+            availableUsersSlots.add(physicianScheduleService.calculateAvailableSlots(currentPhysicianId));
+        }
+        model.addAttribute("availableUsersSlots", availableUsersSlots);
         return "user/search_result";
     }
 
