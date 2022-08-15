@@ -3,10 +3,10 @@
 <body>
 <table>
     <tr>
-        <td><b>substance name:</b></td>
+        <td><b>name:</b></td>
     </tr>
-    <tr th:each="substance : ${apiResponse.substances}">
-        <td th:text="${substance}"></td>
+    <tr th:each="result : ${apiResponse.apiData}">
+        <td th:text="${result}"></td>
     </tr>
     <tr>
         <td>&nbsp;</td>

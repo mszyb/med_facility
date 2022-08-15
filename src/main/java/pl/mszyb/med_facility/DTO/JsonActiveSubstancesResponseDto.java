@@ -15,5 +15,5 @@ public class JsonActiveSubstancesResponseDto {
     @JsonProperty("links")
     Links links;
     @JsonProperty("data")
-    List<String> substances;
+    List<String> apiData;
 }

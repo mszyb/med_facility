@@ -66,12 +66,11 @@ public class PhysicianController {
         return "physician/timetable";
     }
 
-    @PostMapping("/search/active_substances")
-    public String callNFZApi(@RequestParam String searchValue, @RequestParam String pageNum,Model model){
-        if(Integer.parseInt(pageNum)<1){
+    public void callNFZApi(String searchValue, String pageNum, Model model, String baseUri) {
+        if (Integer.parseInt(pageNum) < 1) {
             pageNum = "1";
         }
-        String uri = "https://api.nfz.gov.pl/app-stat-api-ra/active-substances?page=" + pageNum + "&limit=10&format=json&name="+ searchValue;
+        String uri = baseUri + pageNum + "&limit=10&format=json&name=" + searchValue;
         RestTemplate restTemplate = new RestTemplate();
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = restTemplate.getForObject(uri, String.class);
@@ -80,10 +79,23 @@ public class PhysicianController {
         model.addAttribute("searchValue", searchValue);
         try {
             apiResponse = mapper.readValue(jsonString, JsonActiveSubstancesResponseDto.class);
-            model.addAttribute("apiResponse",apiResponse);
+            model.addAttribute("apiResponse", apiResponse);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+    }
+
+    @PostMapping("/search/active_substances")
+    public String searchForActiveSubstances(@RequestParam String searchValue, @RequestParam String pageNum, Model model) {
+        String baseUri = "https://api.nfz.gov.pl/app-stat-api-ra/active-substances?page=";
+        callNFZApi(searchValue, pageNum, model, baseUri);
+        return "physician/search_result";
+    }
+
+    @PostMapping("/search/medicine_products")
+    public String searchForMedicineProducts(@RequestParam String searchValue, @RequestParam String pageNum, Model model) {
+        String baseUri = "https://api.nfz.gov.pl/app-stat-api-ra/medicine-products?page=";
+        callNFZApi(searchValue, pageNum, model, baseUri);
         return "physician/search_result";
     }
 
