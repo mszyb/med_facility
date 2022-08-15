@@ -59,8 +59,8 @@ public class UserSpecServ_Service {
         return userServicesSpecializationsRepository.findByServiceIdAndSpecializationId(serviceId, specId);
     }
 
-    public List<UserServicesSpecializations> findAllForSelectedSpecialization(Specialization spec){
-        return userServicesSpecializationsRepository.findAllForSelectedSpecialization(spec);
+    public List<ServiceType> findAllServicesForSelectedSpecialization(Specialization spec){
+        return userServicesSpecializationsRepository.findAllServicesForSelectedSpecialization(spec);
     }
 
     public List<UserServicesSpecializations> findAllForSelectedServiceAndSpecialization(Specialization spec, ServiceType serv){
