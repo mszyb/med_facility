@@ -18,8 +18,9 @@ import pl.mszyb.med_facility.service.AppointmentService;
 import pl.mszyb.med_facility.service.PhysicianScheduleService;
 import pl.mszyb.med_facility.service.UserService;
 
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
+import java.sql.Time;
+import java.time.*;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -44,10 +45,11 @@ public class PhysicianController {
     }
 
     @ModelAttribute("currentUserAppointments")
-    public List<Appointment> getUserAppointments(){
+    public List<Appointment> getUserAppointments() {
         ZonedDateTime interval = ZonedDateTime.now().plusDays(14);
         return appointmentService.findAllByPhysicianIdForSelectedPeriod(getCurrentUser().getId(), interval, ZonedDateTime.now());
     }
+
     @GetMapping("/homepage")
     public String loginPage() {
         return "physician/logged_physician_homepage";
@@ -60,16 +62,19 @@ public class PhysicianController {
     }
 
     @PostMapping("/timetable/add")
-    public String addNewShift(@DateTimeFormat PhysicianSchedule physicianSchedule, Model model) {
-        if (physicianSchedule.getStartTime() != null && physicianSchedule.getEndTime() != null) {
-            LocalDate startTime = physicianSchedule.getStartTime().toLocalDate();
-            LocalDate endTime = physicianSchedule.getEndTime().toLocalDate();
-            if (startTime.isEqual(endTime)) {
-                physicianSchedule.setPhysician(getCurrentUser());
-                physicianScheduleService.save(physicianSchedule);
-            } else {
-                model.addAttribute("notSameDay", true);
+    public String addNewShift(@RequestParam LocalDate date, @RequestParam LocalTime startTime, @RequestParam LocalTime endTime, Model model) {
+        if (startTime != null && endTime != null && date != null) {
+            if(startTime.isAfter(endTime) || startTime.equals(endTime)){
+                model.addAttribute("wrongTime", true);
+                return "physician/timetable";
             }
+            ZonedDateTime startDateTime = startTime.atDate(date).atZone(ZoneId.of("Europe/Warsaw"));
+            ZonedDateTime endDateTime = endTime.atDate(date).atZone(ZoneId.of("Europe/Warsaw"));
+            PhysicianSchedule physicianSchedule = new PhysicianSchedule();
+            physicianSchedule.setPhysician(getCurrentUser());
+            physicianSchedule.setStartTime(startDateTime);
+            physicianSchedule.setEndTime(endDateTime);
+            physicianScheduleService.save(physicianSchedule);
         }
         return "physician/timetable";
     }
