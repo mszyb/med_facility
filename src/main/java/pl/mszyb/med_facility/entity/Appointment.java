@@ -22,4 +22,8 @@ public class Appointment {
     private ZonedDateTime startTime;
     @Column(unique = true)
     private ZonedDateTime endTime;
+    @ManyToOne
+    private Specialization selectedSpec;
+    @ManyToOne
+    private ServiceType selectedService;
 }

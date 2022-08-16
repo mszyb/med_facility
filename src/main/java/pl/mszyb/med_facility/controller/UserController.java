@@ -36,7 +36,10 @@ public class UserController {
     }
 
     @GetMapping("/homepage")
-    public String loginPage() {
+    public String loginPage(Model model) {
+        ZonedDateTime interval = ZonedDateTime.now().plusDays(14);
+        List<Appointment> appointments = appointmentService.findAllByPatientIdForSelectedPeriod(getCurrentUser().getId(), interval, ZonedDateTime.now());
+        model.addAttribute("appointments", appointments);
         return "user/logged_user_homepage";
     }
 

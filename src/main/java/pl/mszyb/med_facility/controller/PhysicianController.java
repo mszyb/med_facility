@@ -11,12 +11,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import pl.mszyb.med_facility.DTO.JsonActiveSubstancesResponseDto;
+import pl.mszyb.med_facility.entity.Appointment;
 import pl.mszyb.med_facility.entity.PhysicianSchedule;
 import pl.mszyb.med_facility.entity.User;
+import pl.mszyb.med_facility.service.AppointmentService;
 import pl.mszyb.med_facility.service.PhysicianScheduleService;
 import pl.mszyb.med_facility.service.UserService;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Controller
@@ -24,7 +27,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PhysicianController {
 
-    private final UserService userService;
+    private final AppointmentService appointmentService;
     private final PhysicianScheduleService physicianScheduleService;
 
     @ModelAttribute("currentUser")
@@ -35,11 +38,16 @@ public class PhysicianController {
     }
 
     @ModelAttribute("currentUserSchedule")
-    public List<PhysicianSchedule> getUserSchedule(Model model) {
+    public List<PhysicianSchedule> getUserSchedule() {
         User user = getCurrentUser();
         return physicianScheduleService.findAllByPhysicianIdForSelectedPeriod(user.getId());
     }
 
+    @ModelAttribute("currentUserAppointments")
+    public List<Appointment> getUserAppointments(){
+        ZonedDateTime interval = ZonedDateTime.now().plusDays(14);
+        return appointmentService.findAllByPhysicianIdForSelectedPeriod(getCurrentUser().getId(), interval, ZonedDateTime.now());
+    }
     @GetMapping("/homepage")
     public String loginPage() {
         return "physician/logged_physician_homepage";

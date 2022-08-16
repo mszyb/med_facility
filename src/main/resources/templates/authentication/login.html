@@ -5,12 +5,12 @@
     <title>Title</title>
 </head>
 <body>
-<p>ZALOGUJ SIĘ</p><br>
+<p>LOGIN PAGE</p><br>
 <form method="post">
     <input type="email" name="username" placeholder="email"><br>
     <input type="password" name="password" placeholder="password"><br>
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-    <button>ZALOGUJ</button>
+    <button>log in</button>
 </form>
 </body>
 </html>
