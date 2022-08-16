@@ -7,9 +7,11 @@ import pl.mszyb.med_facility.entity.UserServicesSpecializations;
 import pl.mszyb.med_facility.repository.SpecializationRepository;
 import pl.mszyb.med_facility.repository.UserServicesSpecializationsRepository;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 @Service
+@Transactional
 public class UserSpecServ_Service {
 
     private final UserServicesSpecializationsRepository userServicesSpecializationsRepository;
@@ -21,7 +23,6 @@ public class UserSpecServ_Service {
     }
 
     public List<Specialization> findSpecializationsForUserId(long id) {
-
         List<Long> identifiers = userServicesSpecializationsRepository.findSpecializationForUserId(id);
         List<Specialization> userSpecializations = new ArrayList<>();
         for (Long specId : identifiers) {
@@ -48,5 +49,21 @@ public class UserSpecServ_Service {
 
     public void save(UserServicesSpecializations uss){
         userServicesSpecializationsRepository.save(uss);
+    }
+
+    public void remove(long id){
+        userServicesSpecializationsRepository.removeById(id);
+    }
+
+    public UserServicesSpecializations findByServiceAndSpec(long serviceId, long specId){
+        return userServicesSpecializationsRepository.findByServiceIdAndSpecializationId(serviceId, specId);
+    }
+
+    public List<ServiceType> findAllServicesForSelectedSpecialization(Specialization spec){
+        return userServicesSpecializationsRepository.findAllServicesForSelectedSpecialization(spec);
+    }
+
+    public List<UserServicesSpecializations> findAllForSelectedServiceAndSpecialization(Specialization spec, ServiceType serv){
+        return userServicesSpecializationsRepository.findAllForSelectedServiceAndSpecialization(spec, serv);
     }
 }

@@ -5,6 +5,7 @@ import pl.mszyb.med_facility.entity.ServiceType;
 import pl.mszyb.med_facility.repository.ServiceTypeRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ServiceTypeService {
@@ -29,5 +30,9 @@ public class ServiceTypeService {
 
     public ServiceType findByName(String name) {
         return serviceTypeRepository.findByName(name);
+    }
+
+    public Optional<ServiceType> findById(long id){
+        return serviceTypeRepository.findById(id);
     }
 }

@@ -1,0 +1,28 @@
+<div th:insert="header.html"/>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<table>
+    <tr>
+        <td><b>name:</b></td>
+    </tr>
+    <tr th:each="result : ${apiResponse.apiData}">
+        <td th:text="${result}"></td>
+    </tr>
+    <tr>
+        <td> number of results: <span th:text="${apiResponse.meta.count}"></span></td>
+    </tr>
+    <form method="post" action="/doc/search/active_substances">
+        <input type="hidden" th:name="pageNum" th:value="${pageNum}- 1">
+        <input type="hidden" th:name="searchValue" th:value="${searchValue}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <button>prev</button>
+    </form>
+    <form method="post" action="/doc/search/active_substances">
+        <input type="hidden" th:name="pageNum" th:value="${pageNum}+ 1">
+        <input type="hidden" th:name="searchValue" th:value="${searchValue}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <button>next</button>
+    </form>
+</table>
+</body>
+</html>

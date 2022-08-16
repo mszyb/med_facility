@@ -1,5 +1,24 @@
 <div th:insert="header.html"/>
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
-user homepage
+Your upcoming visits:
+<table>
+    <tr th:each="appointment : ${appointments}">
+        <td>dr.
+            <span th:text="${appointment.physician.lastName}"></span>
+        </td>
+        <td th:text="${appointment.selectedSpec.name}"></td>
+        <td th:text="${#temporals.format(appointment.startTime,'dd-MM-yyyy HH:mm')}"></td>
+        <td> service:
+            <span th:text="${appointment.selectedService.name}"></span>
+        </td>
+    </tr>
+</table>
+
+<br><br>
+
+<a th:href="@{http://localhost:8080/user/reservation/search/spec}">Search for a service</a><br><br>
+
+
 </body>
 </html>

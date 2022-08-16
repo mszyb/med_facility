@@ -1,0 +1,16 @@
+<div th:insert="header.html"/>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+Please provide your shift details: <br>
+Warning! You can only set shift for one day. <br>
+
+<form action="/doc/timetable/add" method="post">
+    Date: <input type="date" th:name="date" placeholder="date"> <br>
+    Available from: <input type="time" th:name="startTime" placeholder="startTime"> <br>
+    Available to: <input type="time" th:name="endTime" placeholder="endTime"> <br>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <button>add shift to your timetable</button>
+</form>
+<div th:if="${wrongTime}">!! End time must be preceded by start time !!</div>
+</body>
+</html>
