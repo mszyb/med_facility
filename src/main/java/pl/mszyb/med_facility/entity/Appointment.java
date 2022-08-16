@@ -18,6 +18,8 @@ public class Appointment {
     private User physician;
     @OneToOne
     private User patient;
+    @Column(unique = true)
     private ZonedDateTime startTime;
+    @Column(unique = true)
     private ZonedDateTime endTime;
 }

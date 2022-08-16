@@ -17,4 +17,8 @@ public class AppointmentService {
     public List<Appointment> findAllByPhysicianIdForSelectedPeriod(long physicianId, ZonedDateTime toDate, ZonedDateTime fromDate){
         return appointmentRepository.findAllByPhysicianIdForSelectedPeriod(physicianId, toDate, ZonedDateTime.now());
     }
+
+    public void save(Appointment appointment){
+        appointmentRepository.save(appointment);
+    }
 }
