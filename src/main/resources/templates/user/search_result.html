@@ -9,11 +9,25 @@
         <td>surname</td>
         <td>available term</td>
     </tr>
-    <tr th:each="uss : ${filteredUserSpecServ}">
-        <td th:text="${uss.getUser().getFirstName()}"></td>
-        <td th:text="${uss.getUser().getLastName()}"></td>
-    </tr>
-
+    <div th:each="uss : ${filteredUserSpecServ}">
+        <div th:each="slotsList : ${availableUsersSlotsMap.get(uss.getUser().getId())}">
+            <tr th:each="slot : ${slotsList}">
+                <td th:text="${uss.getUser().getFirstName()}"></td>
+                <td th:text="${uss.getUser().getLastName()}"></td>
+                <td th:text="${#temporals.format(slot, 'dd-MM-yyyy HH:mm')}"></td>
+                <td>
+                    <form action="/user/reservation/add" method="post">
+                        <input type="hidden" th:name="physician" th:value="${uss.getUser().getId()}">
+                        <input type="hidden" th:name="startTime" th:value="${slot}">
+                        <input type="hidden" th:name="endTime" th:value="${slot.plusMinutes(30)}">
+                        <input type="hidden" th:name="patient" th:value="${currentUser.getId()}">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <button>book</button>
+                    </form>
+                </td>
+            </tr>
+        </div>
+    </div>
 </table>
 </body>
 </html>

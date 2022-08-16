@@ -1,19 +1,16 @@
 package pl.mszyb.med_facility.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.mszyb.med_facility.entity.*;
-import pl.mszyb.med_facility.service.PhysicianScheduleService;
-import pl.mszyb.med_facility.service.ServiceTypeService;
-import pl.mszyb.med_facility.service.SpecializationService;
-import pl.mszyb.med_facility.service.UserSpecServ_Service;
+import pl.mszyb.med_facility.service.*;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Controller
 @RequestMapping("/user")
@@ -24,10 +21,18 @@ public class UserController {
     private final UserSpecServ_Service userSpecServService;
     private final ServiceTypeService serviceTypeService;
     private final PhysicianScheduleService physicianScheduleService;
+    private final AppointmentService appointmentService;
 
     @ModelAttribute("allSpecs")
     public List<Specialization> getSpecializations() {
         return specializationService.findAll();
+    }
+
+    @ModelAttribute("currentUser")
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        return (User) authentication.getPrincipal();
     }
 
     @GetMapping("/homepage")
@@ -56,13 +61,20 @@ public class UserController {
         model.addAttribute("filteredUserSpecServ", filteredUserSpecServ);
         model.addAttribute("selectedSpec", selectedSpec);
         model.addAttribute("selectedService", selectedService);
-        List<List<ZonedDateTime>> availableUsersSlots = new ArrayList<>();
-        for(UserServicesSpecializations uss : filteredUserSpecServ){
+        model.addAttribute("appointment", new Appointment());
+        Map<Long, List<ZonedDateTime>> availableUsersSlotsMap = new HashMap<>();
+        for (UserServicesSpecializations uss : filteredUserSpecServ) {
             long currentPhysicianId = uss.getUser().getId();
-            availableUsersSlots.add(physicianScheduleService.calculateAvailableSlots(currentPhysicianId));
+            availableUsersSlotsMap.put(currentPhysicianId, physicianScheduleService.calculateAvailableSlots(currentPhysicianId));
         }
-        model.addAttribute("availableUsersSlots", availableUsersSlots);
+        model.addAttribute("availableUsersSlotsMap", availableUsersSlotsMap);
         return "user/search_result";
     }
 
+    @PostMapping("/reservation/add")
+    public String addNewAppointment(Appointment appointment, Model model) {
+        appointmentService.save(appointment);
+        model.addAttribute("newAppointment", appointment);
+        return "user/appointment_success";
+    }
 }
