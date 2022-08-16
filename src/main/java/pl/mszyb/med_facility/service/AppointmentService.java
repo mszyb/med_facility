@@ -15,10 +15,14 @@ public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
 
     public List<Appointment> findAllByPhysicianIdForSelectedPeriod(long physicianId, ZonedDateTime toDate, ZonedDateTime fromDate){
-        return appointmentRepository.findAllByPhysicianIdForSelectedPeriod(physicianId, toDate, ZonedDateTime.now());
+        return appointmentRepository.findAllByPhysicianIdForSelectedPeriod(physicianId, toDate, fromDate);
     }
 
     public void save(Appointment appointment){
         appointmentRepository.save(appointment);
+    }
+
+    public List<Appointment> findAllByPatientIdForSelectedPeriod(long patientId, ZonedDateTime toDate, ZonedDateTime fromDate){
+        return appointmentRepository.findAllByPatientIdForSelectedPeriod(patientId, toDate, fromDate);
     }
 }

@@ -18,9 +18,11 @@
                 <td>
                     <form action="/user/reservation/add" method="post">
                         <input type="hidden" th:name="physician" th:value="${uss.getUser().getId()}">
-                        <input type="hidden" th:name="startTime" th:value="${slot}">
-                        <input type="hidden" th:name="endTime" th:value="${slot.plusMinutes(30)}">
+                        <input type="hidden" th:name="startTime" th:value="${slot.toLocalDateTime()}">
+                        <input type="hidden" th:name="endTime" th:value="${slot.toLocalDateTime().plusMinutes(30)}">
                         <input type="hidden" th:name="patient" th:value="${currentUser.getId()}">
+                        <input type="hidden" th:name="selectedSpec" th:value="${selectedSpec.id}">
+                        <input type="hidden" th:name="selectedService" th:value="${selectedService.id}">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                         <button>book</button>
                     </form>
