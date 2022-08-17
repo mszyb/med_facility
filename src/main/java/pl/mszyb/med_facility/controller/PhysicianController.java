@@ -17,6 +17,8 @@ import pl.mszyb.med_facility.service.AppointmentService;
 import pl.mszyb.med_facility.service.PhysicianScheduleService;
 
 import java.time.*;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -37,7 +39,9 @@ public class PhysicianController {
     @ModelAttribute("currentUserSchedule")
     public List<PhysicianSchedule> getUserSchedule() {
         User user = getCurrentUser();
-        return physicianScheduleService.findAllByPhysicianIdForSelectedPeriod(user.getId());
+        List<PhysicianSchedule> scheduleList = physicianScheduleService.findAllByPhysicianIdForSelectedPeriod(user.getId());
+        Collections.sort(scheduleList);
+        return scheduleList;
     }
 
     @ModelAttribute("currentUserAppointments")

@@ -11,7 +11,7 @@ import java.time.ZonedDateTime;
 @Getter
 @Setter
 @Entity
-public class PhysicianSchedule {
+public class PhysicianSchedule implements Comparable<PhysicianSchedule>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,4 +21,16 @@ public class PhysicianSchedule {
     private ZonedDateTime startTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private ZonedDateTime endTime;
+
+
+    @Override
+    public int compareTo(PhysicianSchedule o) {
+        if(this.getStartTime().isBefore(o.getStartTime())){
+            return -1;
+        }
+        if(this.getStartTime().equals(o.getStartTime())){
+            return 0;
+        }
+        return 1;
+    }
 }
