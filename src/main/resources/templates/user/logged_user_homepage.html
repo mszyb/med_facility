@@ -12,6 +12,12 @@ Your upcoming visits:
         <td> service:
             <span th:text="${appointment.selectedService.name}"></span>
         </td>
+        <td>
+            <form action="/user/appointment/delete">
+                <input type="hidden" th:name="appointment" th:value="${appointment.id}">
+                <button>cancel visit</button>
+            </form>
+        </td>
     </tr>
 </table>
 

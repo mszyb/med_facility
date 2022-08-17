@@ -14,4 +14,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     @Query("select a from Appointment a where a.patient.id = ?1 and a.startTime < ?2 and a.endTime>=?3")
     List<Appointment> findAllByPatientIdForSelectedPeriod(long patientId, ZonedDateTime toDate, ZonedDateTime fromDate);
 
+    Appointment findById(long appointmentId);
+
+    void deleteById(long appointmentId);
 }

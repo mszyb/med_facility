@@ -80,4 +80,14 @@ public class UserController {
         model.addAttribute("newAppointment", appointment);
         return "user/appointment_success";
     }
+
+    @GetMapping("/appointment/delete")
+    public String deleteAppointment(Appointment appointment, Model model, @RequestParam(defaultValue = "no") String confirm){
+        if(confirm!=null && confirm.equals("yes")){
+            appointmentService.deleteById(appointment.getId());
+            return "redirect:/user/homepage";
+        }
+        model.addAttribute("appointment", appointment);
+        return "/user/appointment_delete_confirmation";
+    }
 }

@@ -1,0 +1,18 @@
+<div th:insert="header.html"/>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+Are you sure you want do delete appointment below? <br>
+<div> service:
+    <span th:text="${appointment.selectedService.name}"></span>
+</div>
+<div> specialist:
+    <span th:text="${appointment.selectedSpec.name}"></span>
+</div>
+<div th:text="${#temporals.format(appointment.startTime,'dd-MM-yyyy HH:mm')}"></div>
+<form action="/user/appointment/delete?confirm=yes">
+    <input type="hidden" th:name="appointment" th:value="${appointment.id}">
+    <input type="hidden" th:name="confirm" th:value="yes">
+    <button>yes, delete appointment</button>
+</form>
+</body>
+</html>

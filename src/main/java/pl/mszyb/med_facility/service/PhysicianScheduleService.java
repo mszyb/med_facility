@@ -29,7 +29,7 @@ public class PhysicianScheduleService {
 
     public List<ZonedDateTime> calculateAvailableSlots(Long physicianId) {
         Duration visitLength = Duration.ofMinutes(30);
-        ZonedDateTime scheduleInterval = ZonedDateTime.now().plusDays(7);
+        ZonedDateTime scheduleInterval = ZonedDateTime.now().plusDays(14);
         List<PhysicianSchedule> physicianSchedule = physicianScheduleRepository.findAllByPhysicianIdForSelectedPeriod(physicianId, scheduleInterval, ZonedDateTime.now());
         List<ZonedDateTime> availableSlots = new ArrayList<>();
         List<Appointment> appointments = appointmentService.findAllByPhysicianIdForSelectedPeriod(physicianId, scheduleInterval, ZonedDateTime.now());

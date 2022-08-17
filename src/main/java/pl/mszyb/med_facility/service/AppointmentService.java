@@ -25,4 +25,12 @@ public class AppointmentService {
     public List<Appointment> findAllByPatientIdForSelectedPeriod(long patientId, ZonedDateTime toDate, ZonedDateTime fromDate){
         return appointmentRepository.findAllByPatientIdForSelectedPeriod(patientId, toDate, fromDate);
     }
+
+    public Appointment findById(long appointmentId){
+        return appointmentRepository.findById(appointmentId);
+    }
+
+    public void deleteById(long appointmentId){
+        appointmentRepository.deleteById(appointmentId);
+    }
 }
