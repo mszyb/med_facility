@@ -15,6 +15,7 @@ import pl.mszyb.med_facility.entity.PhysicianSchedule;
 import pl.mszyb.med_facility.entity.User;
 import pl.mszyb.med_facility.service.AppointmentService;
 import pl.mszyb.med_facility.service.PhysicianScheduleService;
+
 import java.time.*;
 import java.util.List;
 
@@ -69,11 +70,13 @@ public class PhysicianController {
 
             for (PhysicianSchedule schedule : currentUserSchedule) {
                 if (date.equals(schedule.getStartTime().toLocalDate())) {
+                    ZonedDateTime shiftStart = schedule.getStartTime();
+                    ZonedDateTime shiftEnd = schedule.getEndTime();
                     if (
-                            startDateTime.isBefore(schedule.getStartTime()) && endDateTime.isBefore(schedule.getEndTime()) && endDateTime.isAfter(schedule.getStartTime())
-                                    || startDateTime.isBefore(schedule.getStartTime()) && endDateTime.isAfter(schedule.getEndTime())
-                                    || (startDateTime.isAfter(schedule.getStartTime()) || startDateTime.equals(schedule.getStartTime())) && startDateTime.isBefore(schedule.getEndTime()) && (endDateTime.isAfter(schedule.getEndTime()) || endDateTime.equals((schedule.getEndTime())))
-                                    || (startDateTime.isAfter(schedule.getStartTime()) || (startDateTime.equals(schedule.getStartTime()))) && (endDateTime.isBefore(schedule.getEndTime()) || (endDateTime.equals(schedule.getEndTime())))
+                            startDateTime.isBefore(shiftStart) && endDateTime.isBefore(shiftEnd) && endDateTime.isAfter(shiftStart)
+                                    || startDateTime.isBefore(shiftStart) && endDateTime.isAfter(shiftEnd)
+                                    || (startDateTime.isAfter(shiftStart) || startDateTime.equals(shiftStart)) && startDateTime.isBefore(shiftEnd) && (endDateTime.isAfter(shiftEnd) || endDateTime.equals(shiftEnd))
+                                    || (startDateTime.isAfter(shiftStart) || startDateTime.equals(shiftStart)) && (endDateTime.isBefore(shiftEnd) || endDateTime.equals(shiftEnd))
                     ) {
                         model.addAttribute("shiftOverlaps", true);
                         return "physician/timetable";
