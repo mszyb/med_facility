@@ -23,7 +23,7 @@ public class PhysicianScheduleService {
     }
 
     public List<PhysicianSchedule> findAllByPhysicianIdForSelectedPeriod(long physicianId) {
-        ZonedDateTime scheduleInterval = ZonedDateTime.now().plusDays(7);
+        ZonedDateTime scheduleInterval = ZonedDateTime.now().plusDays(14);
         return physicianScheduleRepository.findAllByPhysicianIdForSelectedPeriod(physicianId, scheduleInterval, ZonedDateTime.now());
     }
 

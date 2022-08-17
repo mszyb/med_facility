@@ -3,7 +3,6 @@ package pl.mszyb.med_facility.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -16,11 +15,7 @@ import pl.mszyb.med_facility.entity.PhysicianSchedule;
 import pl.mszyb.med_facility.entity.User;
 import pl.mszyb.med_facility.service.AppointmentService;
 import pl.mszyb.med_facility.service.PhysicianScheduleService;
-import pl.mszyb.med_facility.service.UserService;
-
-import java.sql.Time;
 import java.time.*;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -64,12 +59,27 @@ public class PhysicianController {
     @PostMapping("/timetable/add")
     public String addNewShift(@RequestParam LocalDate date, @RequestParam LocalTime startTime, @RequestParam LocalTime endTime, Model model) {
         if (startTime != null && endTime != null && date != null) {
-            if(startTime.isAfter(endTime) || startTime.equals(endTime)){
+            if (startTime.isAfter(endTime) || startTime.equals(endTime)) {
                 model.addAttribute("wrongTime", true);
                 return "physician/timetable";
             }
             ZonedDateTime startDateTime = startTime.atDate(date).atZone(ZoneId.of("Europe/Warsaw"));
             ZonedDateTime endDateTime = endTime.atDate(date).atZone(ZoneId.of("Europe/Warsaw"));
+            List<PhysicianSchedule> currentUserSchedule = getUserSchedule();
+
+            for (PhysicianSchedule schedule : currentUserSchedule) {
+                if (date.equals(schedule.getStartTime().toLocalDate())) {
+                    if (
+                            startDateTime.isBefore(schedule.getStartTime()) && endDateTime.isBefore(schedule.getEndTime()) && endDateTime.isAfter(schedule.getStartTime())
+                                    || startDateTime.isBefore(schedule.getStartTime()) && endDateTime.isAfter(schedule.getEndTime())
+                                    || (startDateTime.isAfter(schedule.getStartTime()) || startDateTime.equals(schedule.getStartTime())) && startDateTime.isBefore(schedule.getEndTime()) && (endDateTime.isAfter(schedule.getEndTime()) || endDateTime.equals((schedule.getEndTime())))
+                                    || (startDateTime.isAfter(schedule.getStartTime()) || (startDateTime.equals(schedule.getStartTime()))) && (endDateTime.isBefore(schedule.getEndTime()) || (endDateTime.equals(schedule.getEndTime())))
+                    ) {
+                        model.addAttribute("shiftOverlaps", true);
+                        return "physician/timetable";
+                    }
+                }
+            }
             PhysicianSchedule physicianSchedule = new PhysicianSchedule();
             physicianSchedule.setPhysician(getCurrentUser());
             physicianSchedule.setStartTime(startDateTime);
