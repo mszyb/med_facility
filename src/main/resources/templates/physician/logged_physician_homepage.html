@@ -12,6 +12,12 @@ Your upcoming visits: <br><br>
         <td th:text="${appointment.patient.firstName}"></td>
         <td th:text="${#temporals.format(appointment.startTime,'dd-MM-yyyy HH:mm')}"></td>
         <td th:text="${appointment.selectedService.name}"></td>
+        <td>
+            <form action="http://localhost:8080/doc/appointment/done" method="get">
+                <input type="hidden" name="appointmentId" th:value="${appointment.id}">
+                <button>mark as finished</button>
+            </form>
+        </td>
     </tr>
 </table>
 

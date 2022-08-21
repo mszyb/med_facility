@@ -18,6 +18,10 @@ public class AppointmentService {
         return appointmentRepository.findAllByPhysicianIdForSelectedPeriod(physicianId, toDate, fromDate);
     }
 
+    public List<Appointment> findAllNotFinishedByPhysicianIdForSelectedPeriod(long physicianId, ZonedDateTime toDate, ZonedDateTime fromDate){
+        return appointmentRepository.findAllNotFinishedByPhysicianIdForSelectedPeriod(physicianId, toDate, fromDate);
+    }
+
     public void save(Appointment appointment){
         appointmentRepository.save(appointment);
     }
@@ -32,5 +36,8 @@ public class AppointmentService {
 
     public void deleteById(long appointmentId){
         appointmentRepository.deleteById(appointmentId);
+    }
+    public List<Appointment> findAllAlreadyDoneByPatientId(long id){
+        return appointmentRepository.findAllAlreadyDoneByPatientId(id);
     }
 }

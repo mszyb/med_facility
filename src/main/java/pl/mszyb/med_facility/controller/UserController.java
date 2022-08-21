@@ -82,12 +82,20 @@ public class UserController {
     }
 
     @GetMapping("/appointment/delete")
-    public String deleteAppointment(Appointment appointment, Model model, @RequestParam(defaultValue = "no") String confirm){
-        if(confirm!=null && confirm.equals("yes")){
+    public String deleteAppointment(Appointment appointment, Model model, @RequestParam(defaultValue = "no") String confirm) {
+        if (confirm != null && confirm.equals("yes")) {
             appointmentService.deleteById(appointment.getId());
             return "redirect:/user/homepage";
         }
         model.addAttribute("appointment", appointment);
         return "/user/appointment_delete_confirmation";
     }
+
+    @GetMapping("/appointment/history")
+    public String showAppointmentsHistory(Model model) {
+        List<Appointment> doneAppointmentsList = appointmentService.findAllAlreadyDoneByPatientId(getCurrentUser().getId());
+        model.addAttribute("doneAppointmentsList", doneAppointmentsList);
+        return "/user/appointment_history";
+    }
+
 }

@@ -32,7 +32,7 @@ public class PhysicianScheduleService {
         ZonedDateTime scheduleInterval = ZonedDateTime.now().plusDays(14);
         List<PhysicianSchedule> physicianSchedule = physicianScheduleRepository.findAllByPhysicianIdForSelectedPeriod(physicianId, scheduleInterval, ZonedDateTime.now());
         List<ZonedDateTime> availableSlots = new ArrayList<>();
-        List<Appointment> appointments = appointmentService.findAllByPhysicianIdForSelectedPeriod(physicianId, scheduleInterval, ZonedDateTime.now());
+        List<Appointment> appointments = appointmentService.findAllByPhysicianIdForSelectedPeriod(physicianId, scheduleInterval, ZonedDateTime.now().minusDays(7));
         List<ZonedDateTime> alreadyOccupiedSlots = new ArrayList<>();
         for (Appointment appointment : appointments) {
             alreadyOccupiedSlots.add(appointment.getStartTime());

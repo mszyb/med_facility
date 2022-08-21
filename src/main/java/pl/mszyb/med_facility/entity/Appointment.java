@@ -26,4 +26,6 @@ public class Appointment {
     private Specialization selectedSpec;
     @ManyToOne
     private ServiceType selectedService;
+
+    private boolean isDone = false;
 }

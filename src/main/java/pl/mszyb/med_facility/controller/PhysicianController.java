@@ -15,10 +15,8 @@ import pl.mszyb.med_facility.entity.PhysicianSchedule;
 import pl.mszyb.med_facility.entity.User;
 import pl.mszyb.med_facility.service.AppointmentService;
 import pl.mszyb.med_facility.service.PhysicianScheduleService;
-
 import java.time.*;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -47,7 +45,7 @@ public class PhysicianController {
     @ModelAttribute("currentUserAppointments")
     public List<Appointment> getUserAppointments() {
         ZonedDateTime interval = ZonedDateTime.now().plusDays(14);
-        return appointmentService.findAllByPhysicianIdForSelectedPeriod(getCurrentUser().getId(), interval, ZonedDateTime.now());
+        return appointmentService.findAllNotFinishedByPhysicianIdForSelectedPeriod(getCurrentUser().getId(), interval, ZonedDateTime.now().minusDays(7));
     }
 
     @GetMapping("/homepage")
@@ -127,6 +125,18 @@ public class PhysicianController {
         String baseUri = "https://api.nfz.gov.pl/app-stat-api-ra/medicine-products?page=";
         callNFZApi(searchValue, pageNum, model, baseUri);
         return "physician/search_result_medicine_products";
+    }
+
+    @GetMapping("appointment/done")
+    public String markAppointmentAsFinished(@RequestParam(defaultValue = "0") long appointmentId){
+        if(appointmentId!=0){
+           Appointment appointment = appointmentService.findById(appointmentId);
+           if(appointment!=null){
+               appointment.setDone(true);
+               appointmentService.save(appointment);
+           }
+        }
+        return "redirect:/doc/homepage";
     }
 
 }
