@@ -5,12 +5,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import pl.mszyb.med_facility.entity.*;
 import pl.mszyb.med_facility.service.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 @Controller
@@ -23,6 +29,9 @@ public class AdminController {
     private final SpecializationService specializationService;
     private final UserSpecServ_Service userSpecializationService;
     private final ServiceTypeService serviceTypeService;
+    private final AppointmentService appointmentService;
+
+    private final PhysicianScheduleService physicianScheduleService;
 
     @ModelAttribute("roles")
     public Collection<Role> roleList() {
@@ -121,8 +130,8 @@ public class AdminController {
     }
 
     @GetMapping("/service_from_spec/delete")
-    public String deleteServiceFromUserSpec(@RequestParam Long ussId, Model model, @RequestParam Long userId, @RequestParam Long specId){
-       UserServicesSpecializations uss = userSpecializationService.findByServiceAndSpec(ussId, specId);
+    public String deleteServiceFromUserSpec(@RequestParam Long ussId, Model model, @RequestParam Long userId, @RequestParam Long specId) {
+        UserServicesSpecializations uss = userSpecializationService.findByServiceAndSpec(ussId, specId);
         userSpecializationService.remove(uss.getId());
         User user = userService.findById(userId).orElseThrow(NoSuchElementException::new);
         model.addAttribute("user", user);
@@ -130,6 +139,58 @@ public class AdminController {
         model.addAttribute("services", serviceTypeService.findAll());
         model.addAttribute("servicesBySpecializations", userSpecializationService.findSpecializationsAndServicesForUserId(user.getId()));
         return "admin/editUserForm";
+    }
+
+    @GetMapping("/appointment/search")
+    public String searchForAppointment(@RequestParam(required = false) String physicianEmail,
+                                       @RequestParam(required = false) LocalDate date,
+                                       @RequestParam(required = false) String patientEmail,
+                                       Model model) {
+        if (physicianEmail!=null && !physicianEmail.isEmpty()) {
+            User physician = userService.findByEmail(physicianEmail).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "physician with this email address not found"));
+            ZonedDateTime startDateTime = LocalTime.of(00, 01).atDate(date).atZone(ZoneId.of("Europe/Warsaw"));
+            ZonedDateTime endDateTime = LocalTime.of(23, 59).atDate(date).atZone(ZoneId.of("Europe/Warsaw"));
+            List<Appointment> appointments = appointmentService.findAllByPhysicianIdForSelectedPeriod(physician.getId(), endDateTime, startDateTime);
+            model.addAttribute("appointments", appointments);
+            model.addAttribute("userEmail", physicianEmail);
+            return "admin/searchForAppointmentResult";
+        }
+        if(patientEmail!=null && !patientEmail.isEmpty()){
+            User patient = userService.findByEmail(patientEmail).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "patient with this email address not found"));
+            ZonedDateTime startDateTime = LocalTime.of(00, 01).atDate(date).atZone(ZoneId.of("Europe/Warsaw"));
+            ZonedDateTime endDateTime = LocalTime.of(23, 59).atDate(date).atZone(ZoneId.of("Europe/Warsaw"));
+            List<Appointment> appointments = appointmentService.findAllByPatientIdForSelectedPeriod(patient.getId(), endDateTime, startDateTime);
+            model.addAttribute("appointments", appointments);
+            model.addAttribute("userEmail", patientEmail);
+        }
+        return "admin/searchForAppointmentResult";
+    }
+
+    @GetMapping("/appointment/delete")
+    public String deleteAppointment(Appointment appointment) {
+            appointmentService.deleteById(appointment.getId());
+            return "redirect:/";
+    }
+
+    @GetMapping("/appointment/edit")
+    public String editAppointment(Appointment appointment, Model model){
+        appointment = appointmentService.findById(appointment.getId());
+        List<UserServicesSpecializations> filteredUserSpecServ = userSpecializationService.findAllForSelectedServiceAndSpecialization(appointment.getSelectedSpec(), appointment.getSelectedService());
+        model.addAttribute("filteredUserSpecServ", filteredUserSpecServ);
+        model.addAttribute("selectedSpec", appointment.getSelectedSpec());
+        model.addAttribute("selectedService", appointment.getSelectedService());
+        model.addAttribute("appointment", appointment);
+        Map<Long, List<ZonedDateTime>> availableUsersSlotsMap = userSpecializationService.calculateAvailableUserSlotsMap(filteredUserSpecServ);
+        model.addAttribute("availableUsersSlotsMap", availableUsersSlotsMap);
+        return "admin/editAppointment";
+    }
+
+
+
+    @PostMapping("/appointment/add")
+    public String addNewDate(Appointment appointment) {
+        appointmentService.save(appointment);
+        return "redirect:/";
     }
 
 }

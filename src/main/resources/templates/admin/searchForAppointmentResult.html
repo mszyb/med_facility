@@ -1,0 +1,42 @@
+<div th:insert="header.html"/>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+Appointments found for <span th:text="${userEmail}"></span>
+<br><br>
+<table>
+    <tr>
+        <td>physician name: </td>
+        <td>patient name: </td>
+        <td>specialization name: </td>
+        <td>appointment date: </td>
+        <td>visit purpose:</td>
+        <td>is already finished?</td>
+        <td>action:</td>
+    </tr>
+    <tr th:each="appointment : ${appointments}">
+        <td>dr.
+            <span th:text="${appointment.physician.lastName}"></span>
+        </td>
+        <td th:text="${appointment.patient.lastName}"></td>
+        <td th:text="${appointment.selectedSpec.name}"></td>
+        <td th:text="${#temporals.format(appointment.startTime,'dd-MM-yyyy HH:mm')}"></td>
+        <td> service:
+            <span th:text="${appointment.selectedService.name}"></span>
+        </td>
+        <td th:text="${appointment.done}"></td>
+        <td th:if="${appointment.done == false}">
+            <form action="/admin/appointment/delete">
+                <input type="hidden" th:name="appointment" th:value="${appointment.id}">
+                <button>cancel visit</button>
+            </form>
+        </td>
+        <td th:if="${appointment.done == false}">
+            <form action="/admin/appointment/edit">
+                <input type="hidden" th:name="appointment" th:value="${appointment.id}">
+                <button>edit visit</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

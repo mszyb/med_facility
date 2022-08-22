@@ -20,7 +20,6 @@ public class UserController {
     private final SpecializationService specializationService;
     private final UserSpecServ_Service userSpecServService;
     private final ServiceTypeService serviceTypeService;
-    private final PhysicianScheduleService physicianScheduleService;
     private final AppointmentService appointmentService;
 
     @ModelAttribute("allSpecs")
@@ -65,11 +64,7 @@ public class UserController {
         model.addAttribute("selectedSpec", selectedSpec);
         model.addAttribute("selectedService", selectedService);
         model.addAttribute("appointment", new Appointment());
-        Map<Long, List<ZonedDateTime>> availableUsersSlotsMap = new HashMap<>();
-        for (UserServicesSpecializations uss : filteredUserSpecServ) {
-            long currentPhysicianId = uss.getUser().getId();
-            availableUsersSlotsMap.put(currentPhysicianId, physicianScheduleService.calculateAvailableSlots(currentPhysicianId));
-        }
+        Map<Long, List<ZonedDateTime>> availableUsersSlotsMap = userSpecServService.calculateAvailableUserSlotsMap(filteredUserSpecServ);
         model.addAttribute("availableUsersSlotsMap", availableUsersSlotsMap);
         return "user/search_result";
     }

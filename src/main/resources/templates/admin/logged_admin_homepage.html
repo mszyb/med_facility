@@ -33,5 +33,16 @@
     <tr><a th:href="@{http://localhost:8080/admin/services}">Modify services</a></tr>
 </table>
 
+<form action="/admin/appointment/search">
+    <input type="text" name="physicianEmail" placeholder="search by physician email">
+    <input type="date" th:name="date" placeholder="date"> <br>
+    <button>search</button>
+</form>
+<form action="/admin/appointment/search">
+    <input type="text" name="patientEmail" placeholder="search by patient email">
+    <input type="date" th:name="date" placeholder="date"> <br>
+    <button>search</button>
+</form>
+
 </body>
 </html>
