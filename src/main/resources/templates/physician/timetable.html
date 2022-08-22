@@ -13,5 +13,6 @@ Warning! You can only set shift for one day. <br>
 </form>
 <div th:if="${wrongTime}">!! End time must be preceded by start time !!</div>
 <div th:if="${shiftOverlaps}">!! Shifts cannot overlap !!</div>
+<div th:if="${notFullHour}">!! You can only start your shift half or full hour !!</div>
 </body>
 </html>

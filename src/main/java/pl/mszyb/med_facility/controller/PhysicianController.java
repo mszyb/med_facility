@@ -15,6 +15,7 @@ import pl.mszyb.med_facility.entity.PhysicianSchedule;
 import pl.mszyb.med_facility.entity.User;
 import pl.mszyb.med_facility.service.AppointmentService;
 import pl.mszyb.med_facility.service.PhysicianScheduleService;
+
 import java.time.*;
 import java.util.Collections;
 import java.util.List;
@@ -74,16 +75,15 @@ public class PhysicianController {
                 if (date.equals(schedule.getStartTime().toLocalDate())) {
                     ZonedDateTime shiftStart = schedule.getStartTime();
                     ZonedDateTime shiftEnd = schedule.getEndTime();
-                    if (
-                            startDateTime.isBefore(shiftStart) && endDateTime.isBefore(shiftEnd) && endDateTime.isAfter(shiftStart)
-                                    || startDateTime.isBefore(shiftStart) && endDateTime.isAfter(shiftEnd)
-                                    || (startDateTime.isAfter(shiftStart) || startDateTime.equals(shiftStart)) && startDateTime.isBefore(shiftEnd) && (endDateTime.isAfter(shiftEnd) || endDateTime.equals(shiftEnd))
-                                    || (startDateTime.isAfter(shiftStart) || startDateTime.equals(shiftStart)) && (endDateTime.isBefore(shiftEnd) || endDateTime.equals(shiftEnd))
-                    ) {
+                    if (startDateTime.isBefore(shiftStart) && endDateTime.isBefore(shiftEnd) && endDateTime.isAfter(shiftStart) || startDateTime.isBefore(shiftStart) && endDateTime.isAfter(shiftEnd) || (startDateTime.isAfter(shiftStart) || startDateTime.equals(shiftStart)) && startDateTime.isBefore(shiftEnd) && (endDateTime.isAfter(shiftEnd) || endDateTime.equals(shiftEnd)) || (startDateTime.isAfter(shiftStart) || startDateTime.equals(shiftStart)) && (endDateTime.isBefore(shiftEnd) || endDateTime.equals(shiftEnd))) {
                         model.addAttribute("shiftOverlaps", true);
                         return "physician/timetable";
                     }
                 }
+            }
+            if (!(startTime.getMinute() == 30 || startTime.getMinute() == 0)) {
+                model.addAttribute("notFullHour", true);
+                return "physician/timetable";
             }
             PhysicianSchedule physicianSchedule = new PhysicianSchedule();
             physicianSchedule.setPhysician(getCurrentUser());
@@ -128,13 +128,13 @@ public class PhysicianController {
     }
 
     @GetMapping("appointment/done")
-    public String markAppointmentAsFinished(@RequestParam(defaultValue = "0") long appointmentId){
-        if(appointmentId!=0){
-           Appointment appointment = appointmentService.findById(appointmentId);
-           if(appointment!=null){
-               appointment.setDone(true);
-               appointmentService.save(appointment);
-           }
+    public String markAppointmentAsFinished(@RequestParam(defaultValue = "0") long appointmentId) {
+        if (appointmentId != 0) {
+            Appointment appointment = appointmentService.findById(appointmentId);
+            if (appointment != null) {
+                appointment.setDone(true);
+                appointmentService.save(appointment);
+            }
         }
         return "redirect:/doc/homepage";
     }
