@@ -34,6 +34,12 @@ Your schedule: <br><br>
         <tr th:each="shift : ${currentUserSchedule}">
             <td th:text="${#temporals.format(shift.startTime, 'dd-MM-yyyy HH:mm')}"></td>
             <td th:text="${#temporals.format(shift.endTime, 'dd-MM-yyyy HH:mm')}"></td>
+            <td>
+                <form action="/doc/timetable/delete">
+                    <input type="hidden" name="id" th:value="${shift.id}">
+                    <button>delete</button>
+                </form>
+            </td>
         </tr>
     </table>
 </div>

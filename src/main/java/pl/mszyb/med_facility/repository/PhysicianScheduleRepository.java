@@ -12,4 +12,8 @@ public interface PhysicianScheduleRepository extends JpaRepository<PhysicianSche
 
     @Query("select ps from PhysicianSchedule ps where ps.physician.id = ?1 and ps.startTime < ?2 and ps.endTime>=?3")
     List<PhysicianSchedule> findAllByPhysicianIdForSelectedPeriod(Long physicianId, ZonedDateTime toDate, ZonedDateTime fromDate);
+
+    void deleteById(long id);
+
+    PhysicianSchedule findById(long id);
 }

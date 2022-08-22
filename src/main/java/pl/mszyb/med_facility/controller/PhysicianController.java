@@ -94,6 +94,16 @@ public class PhysicianController {
         return "physician/timetable";
     }
 
+    @GetMapping("/timetable/delete")
+    public String deleteShift(PhysicianSchedule shift, Model model, @RequestParam(required = false) String confirm) {
+        if ("yes".equals(confirm)) {
+            physicianScheduleService.deleteById(shift.getId());
+            return "redirect:/doc/homepage";
+        }
+        model.addAttribute("shift", physicianScheduleService.findById(shift.getId()));
+        return "physician/timetable_delete_confirmation";
+    }
+
     public void callNFZApi(String searchValue, String pageNum, Model model, String baseUri) {
         if (Integer.parseInt(pageNum) < 1) {
             pageNum = "1";

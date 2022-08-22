@@ -48,4 +48,12 @@ public class PhysicianScheduleService {
         }
         return availableSlots;
     }
+
+    public void deleteById(long id){
+        physicianScheduleRepository.deleteById(id);
+    }
+
+    public PhysicianSchedule findById(long id){
+        return physicianScheduleRepository.findById(id);
+    }
 }

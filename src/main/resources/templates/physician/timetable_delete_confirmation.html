@@ -1,0 +1,25 @@
+<div th:insert="header.html"/>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+Are you sure you want to delete your schedule? <br>
+Warning! Deleting schedule will not delete already booked appointment for this period. <br>
+If you have already booked appointments and need to change it, please contact site administrator. <br>
+<br>
+schedule to delete:
+<table>
+    <tr>
+        <td>from</td>
+        <td>to</td>
+    </tr>
+    <tr>
+        <td th:text="${#temporals.format(shift.startTime, 'dd-MM-yyyy HH:mm')}"></td>
+        <td th:text="${#temporals.format(shift.endTime, 'dd-MM-yyyy HH:mm')}"></td>
+    </tr>
+</table>
+<form action="/doc/timetable/delete">
+    <input type="hidden" name="id" th:value="${shift.id}">
+    <input type="hidden" name="confirm" value="yes">
+    <button>yes, I'm aware, delete this shift</button>
+</form>
+</body>
+</html>
