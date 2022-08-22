@@ -26,8 +26,8 @@ public class AppointmentService {
         appointmentRepository.save(appointment);
     }
 
-    public List<Appointment> findAllByPatientIdForSelectedPeriod(long patientId, ZonedDateTime toDate, ZonedDateTime fromDate){
-        return appointmentRepository.findAllByPatientIdForSelectedPeriod(patientId, toDate, fromDate);
+    public List<Appointment> findAllNotFinishedByPatientIdForSelectedPeriod(long patientId, ZonedDateTime toDate, ZonedDateTime fromDate){
+        return appointmentRepository.findAllNotFinishedByPatientIdForSelectedPeriod(patientId, toDate, fromDate);
     }
 
     public Appointment findById(long appointmentId){
