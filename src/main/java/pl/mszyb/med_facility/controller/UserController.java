@@ -77,8 +77,11 @@ public class UserController {
     }
 
     @GetMapping("/appointment/delete")
-    public String deleteAppointment(Appointment appointment, Model model, @RequestParam(defaultValue = "no") String confirm) {
+    public String deleteAppointment(Appointment appointment, Model model, @RequestParam(required = false) String confirm) {
         if (confirm != null && confirm.equals("yes")) {
+            if(!Objects.equals(getCurrentUser().getId(), appointment.getPatient().getId())){
+                return "/authentication/403";
+            }
             appointmentService.deleteById(appointment.getId());
             return "redirect:/user/homepage";
         }
