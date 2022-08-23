@@ -44,13 +44,11 @@ public class User implements UserDetails {
     @NotNull
     @NotEmpty
     private String password;
-
     @ManyToOne(fetch = FetchType.EAGER)
     private Role role;
-
     @CreationTimestamp
     private Timestamp created;
-
+    private boolean isVerified;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.getRoleName()));

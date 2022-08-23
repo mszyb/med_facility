@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+<div th:if="${alreadyExist}">Sorry, user with this email already exist. Please try again</div>
 <form method="post">
     <input type="text" name="firstName" placeholder="imię"> <br>
     <input type="text" name="lastName" placeholder="nazwisko"><br>

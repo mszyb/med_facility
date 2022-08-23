@@ -20,7 +20,7 @@ public class SpringSecurity {
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/index", "/sign_in", "/login").permitAll()
+                .antMatchers("/index", "/sign_in/**", "/login").permitAll()
                 .antMatchers("/afterlogin").hasAnyRole("ADMIN", "USER", "PHYSICIAN")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasRole("USER")
