@@ -10,6 +10,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -40,12 +41,13 @@ public class PhysicianScheduleService {
         for (PhysicianSchedule schedule : physicianSchedule) {
             ZonedDateTime slot = schedule.getStartTime();
             while (slot.isBefore(schedule.getEndTime())) {
-                if (!alreadyOccupiedSlots.contains(slot)) {
+                if (!alreadyOccupiedSlots.contains(slot) && slot.isAfter(ZonedDateTime.now())) {
                     availableSlots.add(slot);
                 }
                 slot = slot.plus(visitLength);
             }
         }
+        availableSlots.sort(Comparator.naturalOrder());
         return availableSlots;
     }
 
