@@ -1,51 +1,89 @@
 <div th:insert="header.html"/>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
+<div class="container">
+    <div class="container">
+        <div class="row">
+            <br>
+            <br>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="row d-flex justify-content-center align-items-lg-end h-100">
+                    <div>
+                        <h5 class="text-center text-primary">Recent users:</h5>
+                        <table class="table table-striped table-bordered">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">email</th>
+                                <th scope="col">first name</th>
+                                <th scope="col">last name</th>
+                                <th scope="col">role</th>
+                                <th scope="col">action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="user : ${users}">
+                                <td th:text="${user.email}"></td>
+                                <td th:text="${user.firstName}"></td>
+                                <td th:text="${user.lastName}"></td>
+                                <td th:text="${user.role.getRoleName()}"></td>
+                                <td>
+                                    <a th:href="@{http://localhost:8080/admin/homepage/edit/{id}(id = ${user.getId()})}">Edit</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a th:if="${hasPrevious}"
+                                       th:href="@{http://localhost:8080/admin/homepage(page=${nextPage}-2)}">
+                                        prev </a>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <a th:if="${nextPage < totalPages}"
+                                       th:href="@{http://localhost:8080/admin/homepage(page=${nextPage})}">next</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="row border-primary justify-content-center">
+                    <h5 class="fw-normal mb-3 pb-3 text-primary align-middle" style="letter-spacing: 1px;">Search for appointment</h5>
+                    <br>
+                    <br>
+                    <div>
+                        <form action="/admin/appointment/search">
+                            <input type="text" name="physicianEmail" placeholder="search by physician email">
+                            <input type="date" th:name="date" placeholder="date">
+                            <button class="btn-primary">search</button>
+                        </form>
+                        <form action="/admin/appointment/search">
+                            <input type="text" name="patientEmail" placeholder="search by patient email">
+                            <input type="date" th:name="date" placeholder="date">
+                            <button class="btn-primary">search</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p><b>administrative actions:</b></p>
+                <table>
+                    <tr><a th:href="@{http://localhost:8080/admin/specializations}"><p>Modify specializations</p></a>
+                    </tr>
+                    <tr><a th:href="@{http://localhost:8080/admin/services}">Modify services</a></tr>
+                </table>
 
-<table>
-    <caption>Recent users:</caption>
-    <thead>
-    <tr>
-        <th>email</th>
-        <th>first name</th>
-        <th>last name</th>
-        <th>role</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="user : ${users}">
-        <td th:text="${user.email}"></td>
-        <td th:text="${user.firstName}"></td>
-        <td th:text="${user.lastName}"></td>
-        <td th:text="${user.role.getRoleName()}"></td>
-        <td><a th:href="@{http://localhost:8080/admin/homepage/edit/{id}(id = ${user.getId()})}">Edit</a></td>
-    </tr>
-    </tbody>
-</table>
-<a th:if="${nextPage < totalPages}" th:href="@{http://localhost:8080/admin/homepage(page=${nextPage})}">next</a> <br>
-<a th:if="${hasPrevious}" th:href="@{http://localhost:8080/admin/homepage(page=${nextPage}-2)}"> prev </a>
-
-<br>
-<br>
-<p><b>administrative actions:</b></p>
-<table>
-    <tr><a th:href="@{http://localhost:8080/admin/specializations}"><p>Modify specializations</p></a></tr>
-    <tr><a th:href="@{http://localhost:8080/admin/services}">Modify services</a></tr>
-</table>
-<br>
-<br>
-<br>
-Search for appointment: <br>
-<form action="/admin/appointment/search">
-    <input type="text" name="physicianEmail" placeholder="search by physician email">
-    <input type="date" th:name="date" placeholder="date"> <br>
-    <button>search</button>
-</form>
-<form action="/admin/appointment/search">
-    <input type="text" name="patientEmail" placeholder="search by patient email">
-    <input type="date" th:name="date" placeholder="date"> <br>
-    <button>search</button>
-</form>
-
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
