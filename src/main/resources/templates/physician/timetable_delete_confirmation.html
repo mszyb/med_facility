@@ -1,15 +1,19 @@
 <div th:insert="header.html"/>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
+<div class="container py-5 h-10">
+    <div class="row justify-content-center">
+        <div class="col-auto">
 Are you sure you want to delete your schedule? <br>
 Warning! Deleting schedule will not delete already booked appointment for this period. <br>
 If you have already booked appointments and need to change it, please contact site administrator. <br>
 <br>
 schedule to delete:
-<table>
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
     <tr>
-        <td>from</td>
-        <td>to</td>
+        <th scope="col">from</td>
+        <th scope="col">to</td>
     </tr>
     <tr>
         <td th:text="${#temporals.format(shift.startTime, 'dd-MM-yyyy HH:mm')}"></td>
@@ -19,7 +23,10 @@ schedule to delete:
 <form action="/doc/timetable/delete">
     <input type="hidden" name="id" th:value="${shift.id}">
     <input type="hidden" name="confirm" value="yes">
-    <button>yes, I'm aware, delete this shift</button>
+    <button class="btn-danger">yes, I'm aware, delete this shift</button>
 </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>

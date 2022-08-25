@@ -7,7 +7,6 @@ import pl.mszyb.med_facility.entity.PhysicianSchedule;
 import pl.mszyb.med_facility.repository.PhysicianScheduleRepository;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;

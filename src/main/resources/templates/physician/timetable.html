@@ -1,18 +1,24 @@
 <div th:insert="header.html"/>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-Please provide your shift details: <br>
-Warning! You can only set shift for one day. <br>
+<div class="container py-5 h-10">
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            Please provide your shift details: <br>
+            Warning! You can only set shift for one day. <br>
 
-<form action="/doc/timetable/add" method="post">
-    Date: <input type="date" th:name="date" placeholder="date"> <br>
-    Available from: <input type="time" th:name="startTime" placeholder="startTime"> <br>
-    Available to: <input type="time" th:name="endTime" placeholder="endTime"> <br>
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-    <button>add shift to your timetable</button>
-</form>
-<div th:if="${wrongTime}">!! End time must be preceded by start time !!</div>
-<div th:if="${shiftOverlaps}">!! Shifts cannot overlap !!</div>
-<div th:if="${notFullHour}">!! You can only start your shift half or full hour !!</div>
+            <form action="/doc/timetable/add" method="post">
+                Date: <input type="date" th:name="date" placeholder="date"> <br>
+                Available from: <input type="time" th:name="startTime" placeholder="startTime"> <br>
+                Available to: <input type="time" th:name="endTime" placeholder="endTime"> <br>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button class="btn-success">add shift to your timetable</button>
+            </form>
+            <div th:if="${wrongTime}" class="text-danger"> End time must be preceded by start time </div>
+            <div th:if="${shiftOverlaps}" class="text-danger"> Shifts cannot overlap </div>
+            <div th:if="${notFullHour}" class="text-danger"> You can only start your shift half or full hour </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
