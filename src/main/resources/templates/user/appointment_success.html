@@ -1,23 +1,30 @@
 <div th:insert="header.html"/>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-Congratulations! Your visit has been scheduled.<br>
-Here is short summary:
-<br>
-<table>
-  <tr>
-    <td>Physician name:</td>
-    <td th:text="${newAppointment.physician.lastName}"></td>
+<div class="container py-5 h-10">
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            Congratulations! Your visit has been scheduled.<br>
+            Here is short summary:
+            <br>
+            <br>
+            <table class="table">
+                <tr>
+                    <td>Physician name:</td>
+                    <td th:text="${newAppointment.physician.lastName}"></td>
 
-  </tr>
-  <tr>
-    <td>Date:</td>
-    <td th:text="${#temporals.format(newAppointment.startTime, 'dd-MM-yyyy HH:mm')}"></td>
-  </tr>
-</table>
-<br>
-Please be informed that visit will last around 30 minutes. <br>
-Please come 15 minutes before visit and register at our reception. <br>
-Click <a href="http://localhost:8080">HERE</a> to return to your dashboard.
+                </tr>
+                <tr>
+                    <td>Date:</td>
+                    <td th:text="${#temporals.format(newAppointment.startTime, 'dd-MM-yyyy HH:mm')}"></td>
+                </tr>
+            </table>
+            <br>
+            Please be informed that visit will last around 30 minutes. <br>
+            Please come 15 minutes before visit and register at our reception. <br>
+            Click <a href="http://localhost:8080">HERE</a> to return to your dashboard.
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -1,7 +1,10 @@
 <div th:insert="header.html"/>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-Are you sure you want do delete appointment below? <br>
+<div class="container py-5 h-10">
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            <h5 >Are you sure you want do delete appointment below? </h5>
 <div> service:
     <span th:text="${appointment.selectedService.name}"></span>
 </div>
@@ -12,7 +15,10 @@ Are you sure you want do delete appointment below? <br>
 <form action="/user/appointment/delete?confirm=yes">
     <input type="hidden" th:name="appointment" th:value="${appointment.id}">
     <input type="hidden" th:name="confirm" th:value="yes">
-    <button>yes, delete appointment</button>
+    <button class="btn-danger">yes, delete appointment</button>
 </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>

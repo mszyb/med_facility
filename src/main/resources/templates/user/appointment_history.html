@@ -1,17 +1,23 @@
 <div th:insert="header.html"/>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<table>
-    <tr th:each="appointment : ${doneAppointmentsList}">
-        <td>dr.
-            <span th:text="${appointment.physician.lastName}"></span>
-        </td>
-        <td th:text="${appointment.selectedSpec.name}"></td>
-        <td th:text="${#temporals.format(appointment.startTime,'dd-MM-yyyy HH:mm')}"></td>
-        <td> service:
-            <span th:text="${appointment.selectedService.name}"></span>
-        </td>
-    </tr>
-</table>
+<div class="container py-5 h-10">
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            <table class="table">
+                <tr th:each="appointment : ${doneAppointmentsList}">
+                    <td>dr.
+                        <span th:text="${appointment.physician.lastName}"></span>
+                    </td>
+                    <td th:text="${appointment.selectedSpec.name}"></td>
+                    <td th:text="${#temporals.format(appointment.startTime,'dd-MM-yyyy HH:mm')}"></td>
+                    <td> service:
+                        <span th:text="${appointment.selectedService.name}"></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
 </body>
 </html>

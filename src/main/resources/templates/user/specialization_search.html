@@ -1,13 +1,16 @@
 <div th:insert="header.html"/>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-What service are you looking for?
-<form method="post">
+<div class="container py-5 h-10">
+    <div class="row justify-content-center">
+        <div class="col-auto">
+What are you looking for?
+<form class="form-inline" method="post">
     <select name="selectedSpecId">
         <option th:each="spec : ${allSpecs}" th:value="${spec.id}" th:text="${spec.name}"></option>
     </select>
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-    <button>search</button>
+    <button class="btn-secondary">search</button>
 </form>
 </body>
 </html>

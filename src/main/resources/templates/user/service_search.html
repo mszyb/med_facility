@@ -1,14 +1,20 @@
 <div th:insert="header.html"/>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-available service for <b><span th:text="${selectedSpec.name}"></span></b>
-<form method="post", action="/user/reservation/search/result">
-  <select name="selectedServiceId">
-    <option th:each="serv : ${allServices}" th:value="${serv.id}" th:text="${serv.name}"></option>
-  </select>
-  <input type="hidden" th:name="selectedSpecId" th:value="${selectedSpec.id}">
-  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-  <button>search</button>
-</form>
+<div class="container py-5 h-10">
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            available service for <b><span th:text="${selectedSpec.name}"></span></b>
+            <form class="form-inline" method="post" , action="/user/reservation/search/result">
+                <select name="selectedServiceId">
+                    <option th:each="serv : ${allServices}" th:value="${serv.id}" th:text="${serv.name}"></option>
+                </select>
+                <input type="hidden" th:name="selectedSpecId" th:value="${selectedSpec.id}">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button>search</button>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>
