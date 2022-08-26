@@ -13,21 +13,23 @@
                 </tr>
                 <tr>
                     <td> number of results: <span th:text="${apiResponse.meta.count}"></span></td>
+                </tr>
+                <tr>
                     <td>
-                        <form method="post" action="/doc/search/medicine_products">
-                            <input type="hidden" th:name="pageNum" th:value="${pageNum}- 1">
-                            <input type="hidden" th:name="searchValue" th:value="${searchValue}">
-                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                            <button>prev</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form method="post" action="/doc/search/medicine_products">
-                            <input type="hidden" th:name="pageNum" th:value="${pageNum}+ 1">
-                            <input type="hidden" th:name="searchValue" th:value="${searchValue}">
-                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                            <button>next</button>
-                        </form>
+                        <div class="btn-group">
+                            <form method="post" action="/doc/search/medicine_products">
+                                <input type="hidden" th:name="pageNum" th:value="${pageNum}- 1">
+                                <input type="hidden" th:name="searchValue" th:value="${searchValue}">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                                <button>prev</button>
+                            </form>
+                            <form method="post" action="/doc/search/medicine_products">
+                                <input type="hidden" th:name="pageNum" th:value="${pageNum}+ 1">
+                                <input type="hidden" th:name="searchValue" th:value="${searchValue}">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                                <button>next</button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
             </table>
