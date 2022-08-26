@@ -38,6 +38,7 @@ public class UserController {
     public String loginPage(Model model) {
         ZonedDateTime interval = ZonedDateTime.now().plusDays(14);
         List<Appointment> appointments = appointmentService.findAllNotFinishedByPatientIdForSelectedPeriod(getCurrentUser().getId(), interval, ZonedDateTime.now());
+        appointments.sort(Comparator.comparing(Appointment::getStartTime));
         model.addAttribute("appointments", appointments);
         return "user/logged_user_homepage";
     }

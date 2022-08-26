@@ -18,6 +18,7 @@ import pl.mszyb.med_facility.service.PhysicianScheduleService;
 
 import java.time.*;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -46,7 +47,9 @@ public class PhysicianController {
     @ModelAttribute("currentUserAppointments")
     public List<Appointment> getUserAppointments() {
         ZonedDateTime interval = ZonedDateTime.now().plusDays(14);
-        return appointmentService.findAllNotFinishedByPhysicianIdForSelectedPeriod(getCurrentUser().getId(), interval, ZonedDateTime.now().minusDays(7));
+        List<Appointment> appointments = appointmentService.findAllNotFinishedByPhysicianIdForSelectedPeriod(getCurrentUser().getId(), interval, ZonedDateTime.now().minusDays(7));
+        appointments.sort(Comparator.comparing(Appointment::getStartTime));
+        return appointments;
     }
 
     @GetMapping("/homepage")
