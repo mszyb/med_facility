@@ -40,7 +40,7 @@ public class AdminController {
 
     @GetMapping("/homepage")
     public String loginPage(@RequestParam String page, Model model) {
-        Pageable pageable = PageRequest.of(Integer.parseInt(page), 5, Sort.by("created"));
+        Pageable pageable = PageRequest.of(Integer.parseInt(page), 5, Sort.by("created").descending());
         Page<User> userPage = userService.findAll(pageable);
         List<User> users = userPage.getContent();
         model.addAttribute("users", users);
