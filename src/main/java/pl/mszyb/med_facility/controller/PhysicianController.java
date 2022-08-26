@@ -152,4 +152,11 @@ public class PhysicianController {
         return "redirect:/doc/homepage";
     }
 
+    @GetMapping("/appointment/history")
+    public String showAppointmentsHistory(Model model) {
+        List<Appointment> doneAppointmentsList = appointmentService.findAllAlreadyDoneByPhysicianId(getCurrentUser().getId());
+        model.addAttribute("doneAppointmentsList", doneAppointmentsList);
+        return "/physician/appointment_history";
+    }
+
 }

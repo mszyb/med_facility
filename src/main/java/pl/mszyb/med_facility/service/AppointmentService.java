@@ -41,6 +41,10 @@ public class AppointmentService {
         return appointmentRepository.findAllAlreadyDoneByPatientId(id);
     }
 
+    public List<Appointment> findAllAlreadyDoneByPhysicianId(long id){
+        return appointmentRepository.findAllAlreadyDoneByPhysicianId(id);
+    }
+
     public List<Appointment> findAllByPatientIdForSelectedPeriod(long patientId, ZonedDateTime toDate, ZonedDateTime fromDate){
         return appointmentRepository.findAllByPatientIdForSelectedPeriod(patientId, toDate, fromDate);
     }

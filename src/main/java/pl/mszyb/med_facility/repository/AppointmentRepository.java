@@ -22,4 +22,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     void deleteById(long appointmentId);
     @Query("select a from Appointment a where a.patient.id = ?1 and a.isDone = true")
     List<Appointment> findAllAlreadyDoneByPatientId(long patientId);
+
+    @Query("select a from Appointment a where a.physician.id = ?1 and a.isDone = true")
+    List<Appointment> findAllAlreadyDoneByPhysicianId(long patientId);
 }
