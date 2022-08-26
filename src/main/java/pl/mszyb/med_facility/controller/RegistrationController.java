@@ -58,11 +58,9 @@ public class RegistrationController {
     public String confirmEmail(@RequestParam String token) {
         ConfirmationToken tokenFromDb = confirmationTokenService.findByConfirmationToken(token);
         if (tokenFromDb != null) {
-
             if (tokenFromDb.getUser().isVerified()) {
                 return "authentication/broken_link";
             }
-
             Long userId = tokenFromDb.getUser().getId();
             Optional<User> userOptional = userService.findById(userId);
             userOptional.ifPresent(user -> {

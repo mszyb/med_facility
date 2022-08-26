@@ -39,7 +39,7 @@ public class UserSpecServ_Service {
             if (servicesMap.containsKey(uss.getSpecialization())) {
                 servicesMap.get(uss.getSpecialization()).add(uss.getService());
             } else {
-                ArrayList<ServiceType> services = new ArrayList<>();
+                List<ServiceType> services = new ArrayList<>();
                 services.add(uss.getService());
                 servicesMap.put(uss.getSpecialization(), services);
             }
