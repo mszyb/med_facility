@@ -20,4 +20,5 @@ public class Specialization {
     @NotEmpty
     @Column(unique = true)
     private String name;
+    private boolean isActive = true;
 }

@@ -15,6 +15,7 @@
                         <tr>
                             <th scope="col"> id</th>
                             <th scope="col">name</th>
+                            <th scope="col">isActive</th>
                             <th scope="col">action</th>
                         </tr>
                         </thead>
@@ -22,8 +23,10 @@
                         <tr th:each="specialization : ${specializations}">
                             <td th:text="${specialization.id}"></td>
                             <td th:text="${specialization.name}"></td>
+                            <td th:text="${specialization.active}"></td>
                             <td>
-                                <a th:href="@{http://localhost:8080/admin/specialization/delete/{id}(id = ${specialization.getId()})}">remove</a>
+                                <a th:if="${specialization.isActive()==true}" th:href="@{http://localhost:8080/admin/specialization/deactivate/{id}(id = ${specialization.getId()})}">deactivate</a>
+                                <a th:if="${specialization.isActive()==false}" th:href="@{http://localhost:8080/admin/specialization/activate/{id}(id = ${specialization.getId()})}">activate</a>
                             </td>
                         </tr>
                         </tbody>

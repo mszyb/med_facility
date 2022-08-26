@@ -85,10 +85,16 @@
 
                                             </div>
                                         </select>
-                                        <input type="checkbox" class="form-check pull-left" name="servicesNames"
-                                               th:each="s: ${services}"
-                                               th:value="${s.name}"
-                                               th:text="${s.name}"/>
+                                        <div th:each="s: ${services}">
+                                            <div class="row">
+                                                <div class="input-group">
+                                                    <input type="checkbox" class="form-check"
+                                                           name="servicesNames"
+                                                           th:value="${s.name}" id="availableServices"/>
+                                                    <label th:text="${s.name}" for="availableServices"></label>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <input type="hidden" th:name="${_csrf.parameterName}"
                                                th:value="${_csrf.token}"/>
                                         <input type="hidden" th:name="userId" th:value="${user.id}">
@@ -97,7 +103,8 @@
                                     </form>
                                 </div>
                                 <br>
-                                <div th:if="${serviceAlreadyAssigned}" class="text-warning"> selected service already assigned for this
+                                <div th:if="${serviceAlreadyAssigned}" class="text-warning"> selected service already
+                                    assigned for this
                                     specialization
                                 </div>
                             </div>

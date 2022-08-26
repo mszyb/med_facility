@@ -16,6 +16,7 @@
                 <tr>
                     <th scope="col">id</th>
                     <th scope="col">service name</th>
+                    <th scope="col">isActive</th>
                     <th scope="col">action</th>
                 </tr>
                 </thead>
@@ -23,7 +24,9 @@
                 <tr th:each="serv : ${services}">
                     <td th:text="${serv.id}"></td>
                     <td th:text="${serv.name}"></td>
-                    <td><a th:href="@{http://localhost:8080/admin/service/delete/{id}(id = ${serv.getId()})}">remove</a>
+                    <td th:text="${serv.active}"></td>
+                    <td><a th:if="${serv.isActive()==true}" th:href="@{http://localhost:8080/admin/service/deactivate/{id}(id = ${serv.getId()})}">deactivate</a>
+                        <a th:if="${serv.isActive()==false}" th:href="@{http://localhost:8080/admin/service/activate/{id}(id = ${serv.getId()})}">activate</a>
                     </td>
                 </tr>
                 </tbody>

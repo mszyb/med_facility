@@ -24,7 +24,7 @@ public class UserController {
 
     @ModelAttribute("allSpecs")
     public List<Specialization> getSpecializations() {
-        return specializationService.findAll();
+        return specializationService.findAllActive();
     }
 
     @ModelAttribute("currentUser")
@@ -51,7 +51,7 @@ public class UserController {
     @PostMapping("/reservation/search/spec")
     public String showServiceSearchForm(@RequestParam Long selectedSpecId, Model model) {
         Specialization selectedSpec = specializationService.findById(selectedSpecId).orElseThrow(NoSuchElementException::new);
-        model.addAttribute("allServices", userSpecServService.findAllServicesForSelectedSpecialization(selectedSpec));
+        model.addAttribute("allServices", userSpecServService.findAllActiveServicesForSelectedSpecialization(selectedSpec));
         model.addAttribute("selectedSpec", specializationService.findById(selectedSpecId).orElseThrow(NoSuchElementException::new));
         return "user/service_search";
     }

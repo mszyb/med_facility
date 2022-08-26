@@ -19,4 +19,5 @@ public class ServiceType {
     @NotEmpty
     @NotNull
     private String name;
+    private boolean isActive = true;
 }

@@ -55,8 +55,8 @@ public class AdminController {
     public String showUserEditPage(@PathVariable Long id, Model model) {
         User user = userService.findById(id).orElseThrow(NoSuchElementException::new);
         model.addAttribute("user", user);
-        model.addAttribute("specializations", specializationService.findAll());
-        model.addAttribute("services", serviceTypeService.findAll());
+        model.addAttribute("specializations", specializationService.findAllActive());
+        model.addAttribute("services", serviceTypeService.findAllActive());
         model.addAttribute("servicesBySpecializations", userSpecializationService.findSpecializationsAndServicesForUserId(id));
         return "admin/editUserForm";
     }
@@ -74,9 +74,15 @@ public class AdminController {
         return "admin/specializations";
     }
 
-    @GetMapping("/specialization/delete/{id}")
-    public String deleteSpecialization(@PathVariable long id) {
-        specializationService.remove(id);
+    @GetMapping("/specialization/deactivate/{id}")
+    public String deactivateSpecialization(@PathVariable long id) {
+        specializationService.deactivate(id);
+        return "redirect:/admin/specializations";
+    }
+
+    @GetMapping("/specialization/activate/{id}")
+    public String activateSpecialization(@PathVariable long id) {
+        specializationService.activate(id);
         return "redirect:/admin/specializations";
     }
 
@@ -104,8 +110,8 @@ public class AdminController {
             }
         }
         model.addAttribute("user", user);
-        model.addAttribute("specializations", specializationService.findAll());
-        model.addAttribute("services", serviceTypeService.findAll());
+        model.addAttribute("specializations", specializationService.findAllActive());
+        model.addAttribute("services", serviceTypeService.findAllActive());
         model.addAttribute("servicesBySpecializations", userSpecializationService.findSpecializationsAndServicesForUserId(userId));
         return "admin/editUserForm";
     }
@@ -117,11 +123,18 @@ public class AdminController {
         return "admin/services";
     }
 
-    @GetMapping("/service/delete/{id}")
-    public String deleteService(@PathVariable long id) {
-        serviceTypeService.remove(id);
+    @GetMapping("/service/deactivate/{id}")
+    public String deactivateService(@PathVariable long id) {
+        serviceTypeService.deactivate(id);
         return "redirect:/admin/services";
     }
+
+    @GetMapping("/service/activate/{id}")
+    public String activateService(@PathVariable long id) {
+        serviceTypeService.activate(id);
+        return "redirect:/admin/services";
+    }
+
 
     @PostMapping("/services/add")
     public String addService(ServiceType newServ) {
@@ -135,8 +148,8 @@ public class AdminController {
         userSpecializationService.remove(uss.getId());
         User user = userService.findById(userId).orElseThrow(NoSuchElementException::new);
         model.addAttribute("user", user);
-        model.addAttribute("specializations", specializationService.findAll());
-        model.addAttribute("services", serviceTypeService.findAll());
+        model.addAttribute("specializations", specializationService.findAllActive());
+        model.addAttribute("services", serviceTypeService.findAllActive());
         model.addAttribute("servicesBySpecializations", userSpecializationService.findSpecializationsAndServicesForUserId(user.getId()));
         return "admin/editUserForm";
     }

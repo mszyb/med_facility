@@ -5,6 +5,7 @@ import pl.mszyb.med_facility.entity.Specialization;
 import pl.mszyb.med_facility.repository.SpecializationRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -16,12 +17,22 @@ public class SpecializationService {
         this.specializationRepository = specializationRepository;
     }
 
-    public List<Specialization> findAll() {
-        return specializationRepository.findAll();
+    public List<Specialization> findAllActive() {
+        return specializationRepository.findAllActive();
     }
 
-    public void remove(long id) {
-        specializationRepository.deleteById(id);
+    public List<Specialization> findAll(){
+        return specializationRepository.findAll();
+    }
+    public void deactivate(long id) {
+        Specialization specialization = specializationRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        specialization.setActive(false);
+        specializationRepository.save(specialization);
+    }
+    public void activate(long id) {
+        Specialization specialization = specializationRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        specialization.setActive(true);
+        specializationRepository.save(specialization);
     }
 
     public void save(Specialization specialization) {
