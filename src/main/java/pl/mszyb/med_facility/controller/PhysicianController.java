@@ -1,7 +1,5 @@
 package pl.mszyb.med_facility.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -113,17 +111,10 @@ public class PhysicianController {
         }
         String uri = baseUri + pageNum + "&limit=10&format=json&name=" + searchValue;
         RestTemplate restTemplate = new RestTemplate();
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString = restTemplate.getForObject(uri, String.class);
-        JsonActiveSubstancesResponseDto apiResponse = null;
+        JsonActiveSubstancesResponseDto jsonString = restTemplate.getForObject(uri, JsonActiveSubstancesResponseDto.class);
         model.addAttribute("pageNum", pageNum);
         model.addAttribute("searchValue", searchValue);
-        try {
-            apiResponse = mapper.readValue(jsonString, JsonActiveSubstancesResponseDto.class);
-            model.addAttribute("apiResponse", apiResponse);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        model.addAttribute("apiResponse", jsonString);
     }
 
     @PostMapping("/search/active_substances")
@@ -156,7 +147,7 @@ public class PhysicianController {
     public String showAppointmentsHistory(Model model) {
         List<Appointment> doneAppointmentsList = appointmentService.findAllAlreadyDoneByPhysicianId(getCurrentUser().getId());
         model.addAttribute("doneAppointmentsList", doneAppointmentsList);
-        return "/physician/appointment_history";
+        return "physician/appointment_history";
     }
 
 }

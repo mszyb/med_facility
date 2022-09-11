@@ -11,6 +11,6 @@ public class HomepageController {
 
     @GetMapping("/")
     public String showHomePage(HttpServletRequest request) {
-        return Authenticator.redirectLoggedUsersOrReturnViewName(request, "/index");
+        return Authenticator.redirectLoggedUsersOrReturnViewName(request, "index");
     }
 }

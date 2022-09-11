@@ -19,7 +19,7 @@
                         <div class="col-md-6 col-lg-7 d-flex align-items-center">
                             <div class="card-body p-4 p-lg-5 text-black">
 
-                                <form method="post">
+                                <form method="post" action="/login">
                                     <div class="d-flex align-items-center mb-3 pb-1">
                                         <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
                                         <span class="h1 fw-bold mb-0">Med-Facility</span>
@@ -40,9 +40,8 @@
                                     <div class="pt-1 mb-4">
                                         <button class="btn btn-dark btn-lg btn-block">Login</button>
                                     </div>
-                                    <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a href="http://localhost:8080/sign_in">click here</a>
+                                    <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a th:href="@{sign_in}">click here</a>
                                 </form>
-
                             </div>
                         </div>
                     </div>

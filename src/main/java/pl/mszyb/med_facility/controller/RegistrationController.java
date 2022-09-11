@@ -37,7 +37,7 @@ public class RegistrationController {
     public String readRegistrationForm(User user, Model model) {
         if (userService.findByEmail(user.getEmail()).isPresent()) {
             model.addAttribute("alreadyExist", true);
-            return "/registration/registration";
+            return "registration/registration";
         }
         user.setRole(roleService.findRoleByName("ROLE_UNVERIFIED"));
         userService.save(user);
