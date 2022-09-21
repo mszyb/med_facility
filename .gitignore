@@ -16,6 +16,6 @@ _site/
 *.logs
 .idea/
 .eclipse
-
+/src/main/resources/dev.properties
 .gitkeep
 
