@@ -2,9 +2,7 @@ package pl.mszyb.med_facility.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.mszyb.med_facility.entity.ServiceType;
-import pl.mszyb.med_facility.entity.Specialization;
-import pl.mszyb.med_facility.entity.UserServicesSpecializations;
+import pl.mszyb.med_facility.entity.*;
 import pl.mszyb.med_facility.repository.SpecializationRepository;
 import pl.mszyb.med_facility.repository.UserServicesSpecializationsRepository;
 
@@ -20,6 +18,8 @@ public class UserSpecServ_Service {
     private final UserServicesSpecializationsRepository userServicesSpecializationsRepository;
     private final SpecializationRepository specializationRepository;
     private final PhysicianScheduleService physicianScheduleService;
+    private final SpecializationService specializationService;
+    private final ServiceTypeService serviceTypeService;
 
 
     public List<Specialization> findSpecializationsForUserId(long id) {
@@ -45,6 +45,23 @@ public class UserSpecServ_Service {
             }
         }
         return servicesMap;
+    }
+
+    public void specializationToUserAssociation(String specializationName, Long userId, List<String> servicesNames, User user) throws ServiceTypeAlreadyAssignedException {
+        Specialization specialization = specializationService.findByName(specializationName);
+        Map<Specialization, List<ServiceType>> servicesBySpecializations = findSpecializationsAndServicesForUserId(userId);
+        for (String name : servicesNames) {
+            ServiceType serv = serviceTypeService.findByName(name);
+            if (!servicesBySpecializations.containsKey(specialization) || !servicesBySpecializations.get(specialization).contains(serv)) {
+                UserServicesSpecializations uss = new UserServicesSpecializations();
+                uss.setUser(user);
+                uss.setSpecialization(specialization);
+                uss.setService(serv);
+                save(uss);
+            } else {
+                throw new ServiceTypeAlreadyAssignedException("Sorry, but this service is already assigned for selected specialization");
+            }
+        }
     }
 
     public void save(UserServicesSpecializations uss) {

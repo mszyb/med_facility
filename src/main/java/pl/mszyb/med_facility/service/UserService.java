@@ -42,7 +42,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Page<User> findAll(Pageable pageable) {
+    public Page<User> findAllWithPagination(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
 

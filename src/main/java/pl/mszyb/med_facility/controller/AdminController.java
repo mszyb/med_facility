@@ -39,12 +39,11 @@ public class AdminController {
     }
 
     @GetMapping("/homepage")
-    public String loginPage(@RequestParam String page, Model model) {
-        Pageable pageable = PageRequest.of(Integer.parseInt(page), 5, Sort.by("created").descending());
-        Page<User> userPage = userService.findAll(pageable);
-        List<User> users = userPage.getContent();
-        model.addAttribute("users", users);
-        model.addAttribute("nextPage", Integer.parseInt(page) + 1);
+    public String loginPage(@RequestParam Integer page, Model model) {
+        Pageable pageable = PageRequest.of(page, 5, Sort.by("created").descending());
+        Page<User> userPage = userService.findAllWithPagination(pageable);
+        model.addAttribute("users", userPage.getContent());
+        model.addAttribute("nextPage", page + 1);
         model.addAttribute("hasPrevious", pageable.hasPrevious());
         model.addAttribute("totalPages", userPage.getTotalPages());
         return "admin/logged_admin_homepage";
@@ -93,20 +92,11 @@ public class AdminController {
 
     @PostMapping("/specialization_to_user_association")
     public String SpecializationToUserAssociation(Model model, @RequestParam String specializationName, @RequestParam Long userId, @RequestParam List<String> servicesNames) {
-        Specialization specialization = specializationService.findByName(specializationName);
         User user = userService.findById(userId).orElseThrow(NoSuchElementException::new);
-        Map<Specialization, List<ServiceType>> servicesBySpecializations = userSpecializationService.findSpecializationsAndServicesForUserId(userId);
-        for (String name : servicesNames) {
-            ServiceType serv = serviceTypeService.findByName(name);
-            if (!servicesBySpecializations.containsKey(specialization) || !servicesBySpecializations.get(specialization).contains(serv)) {
-                UserServicesSpecializations uss = new UserServicesSpecializations();
-                uss.setUser(user);
-                uss.setSpecialization(specialization);
-                uss.setService(serv);
-                userSpecializationService.save(uss);
-            } else {
-                model.addAttribute("serviceAlreadyAssigned", true);
-            }
+        try {
+            userSpecializationService.specializationToUserAssociation(specializationName, userId, servicesNames, user);
+        } catch (ServiceTypeAlreadyAssignedException e) {
+            model.addAttribute("serviceAlreadyAssigned", true);
         }
         model.addAttribute("user", user);
         model.addAttribute("specializations", specializationService.findAllActive());
@@ -154,25 +144,13 @@ public class AdminController {
     }
 
     @GetMapping("/appointment/search")
-    public String searchForAppointment(@RequestParam(required = false) String physicianEmail,
-                                       @RequestParam(required = false) LocalDate date,
-                                       @RequestParam(required = false) String patientEmail,
-                                       Model model) {
+    public String searchForAppointment(@RequestParam(required = false) String physicianEmail, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String patientEmail, Model model) {
         if (physicianEmail != null && !physicianEmail.isEmpty()) {
-            User physician = userService.findByEmail(physicianEmail).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "physician with this email address not found"));
-            ZonedDateTime startDateTime = LocalTime.of(00, 01).atDate(date).atZone(ZoneId.of("Europe/Warsaw"));
-            ZonedDateTime endDateTime = LocalTime.of(23, 59).atDate(date).atZone(ZoneId.of("Europe/Warsaw"));
-            List<Appointment> appointments = appointmentService.findAllByPhysicianIdForSelectedPeriod(physician.getId(), endDateTime, startDateTime);
-            model.addAttribute("appointments", appointments);
+            model.addAttribute("appointments", appointmentService.findPhysicianAppointments(physicianEmail, date));
             model.addAttribute("userEmail", physicianEmail);
-            return "admin/searchForAppointmentResult";
         }
         if (patientEmail != null && !patientEmail.isEmpty()) {
-            User patient = userService.findByEmail(patientEmail).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "patient with this email address not found"));
-            ZonedDateTime startDateTime = LocalTime.of(00, 01).atDate(date).atZone(ZoneId.of("Europe/Warsaw"));
-            ZonedDateTime endDateTime = LocalTime.of(23, 59).atDate(date).atZone(ZoneId.of("Europe/Warsaw"));
-            List<Appointment> appointments = appointmentService.findAllByPatientIdForSelectedPeriod(patient.getId(), endDateTime, startDateTime);
-            model.addAttribute("appointments", appointments);
+            model.addAttribute("appointments", appointmentService.findPatientAppointments(patientEmail, date));
             model.addAttribute("userEmail", patientEmail);
         }
         return "admin/searchForAppointmentResult";
@@ -186,7 +164,6 @@ public class AdminController {
 
     @GetMapping("/appointment/edit")
     public String editAppointment(Appointment appointment, Model model) {
-        appointment = appointmentService.findById(appointment.getId());
         List<UserServicesSpecializations> filteredUserSpecServ = userSpecializationService.findAllForSelectedServiceAndSpecialization(appointment.getSelectedSpec(), appointment.getSelectedService());
         model.addAttribute("filteredUserSpecServ", filteredUserSpecServ);
         model.addAttribute("selectedSpec", appointment.getSelectedSpec());
