@@ -96,6 +96,7 @@ public class AdminController {
         try {
             userSpecializationService.specializationToUserAssociation(specializationName, userId, servicesNames, user);
         } catch (ServiceTypeAlreadyAssignedException e) {
+            e.printStackTrace();
             model.addAttribute("serviceAlreadyAssigned", true);
         }
         model.addAttribute("user", user);

@@ -30,7 +30,6 @@ public class PhysicianController {
     @ModelAttribute("currentUser")
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getPrincipal();
         return (User) authentication.getPrincipal();
     }
 
@@ -44,8 +43,7 @@ public class PhysicianController {
 
     @ModelAttribute("currentUserAppointments")
     public List<Appointment> getUserAppointments() {
-        ZonedDateTime interval = ZonedDateTime.now().plusDays(14);
-        List<Appointment> appointments = appointmentService.findAllNotFinishedByPhysicianIdForSelectedPeriod(getCurrentUser().getId(), interval, ZonedDateTime.now().minusDays(7));
+        List<Appointment> appointments = appointmentService.findAllNotFinishedByPhysicianIdForSelectedPeriod(getCurrentUser().getId(), ZonedDateTime.now().plusDays(14), ZonedDateTime.now().minusDays(7));
         appointments.sort(Comparator.comparing(Appointment::getStartTime));
         return appointments;
     }
@@ -64,35 +62,15 @@ public class PhysicianController {
     @PostMapping("/timetable/add")
     public String addNewShift(@RequestParam LocalDate date, @RequestParam LocalTime startTime, @RequestParam LocalTime endTime, Model model) {
         if (startTime != null && endTime != null && date != null) {
-            if (startTime.isAfter(endTime) || startTime.equals(endTime)) {
-                model.addAttribute("wrongTime", true);
-                return "physician/timetable";
+            try {
+                physicianScheduleService.addNewShift(date, startTime, endTime, getCurrentUser());
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+                model.addAttribute("error", true);
+                model.addAttribute("errorMessage", e.getMessage());
             }
-            ZonedDateTime startDateTime = startTime.atDate(date).atZone(ZoneId.of("Europe/Warsaw"));
-            ZonedDateTime endDateTime = endTime.atDate(date).atZone(ZoneId.of("Europe/Warsaw"));
-            List<PhysicianSchedule> currentUserSchedule = getUserSchedule();
-
-            for (PhysicianSchedule schedule : currentUserSchedule) {
-                if (date.equals(schedule.getStartTime().toLocalDate())) {
-                    ZonedDateTime shiftStart = schedule.getStartTime();
-                    ZonedDateTime shiftEnd = schedule.getEndTime();
-                    if (startDateTime.isBefore(shiftStart) && endDateTime.isBefore(shiftEnd) && endDateTime.isAfter(shiftStart) || startDateTime.isBefore(shiftStart) && endDateTime.isAfter(shiftEnd) || (startDateTime.isAfter(shiftStart) || startDateTime.equals(shiftStart)) && startDateTime.isBefore(shiftEnd) && (endDateTime.isAfter(shiftEnd) || endDateTime.equals(shiftEnd)) || (startDateTime.isAfter(shiftStart) || startDateTime.equals(shiftStart)) && (endDateTime.isBefore(shiftEnd) || endDateTime.equals(shiftEnd))) {
-                        model.addAttribute("shiftOverlaps", true);
-                        return "physician/timetable";
-                    }
-                }
-            }
-            if (!(startTime.getMinute() == 30 || startTime.getMinute() == 0)) {
-                model.addAttribute("notFullHour", true);
-                return "physician/timetable";
-            }
-            PhysicianSchedule physicianSchedule = new PhysicianSchedule();
-            physicianSchedule.setPhysician(getCurrentUser());
-            physicianSchedule.setStartTime(startDateTime);
-            physicianSchedule.setEndTime(endDateTime);
-            physicianScheduleService.save(physicianSchedule);
         }
-        return "physician/timetable";
+            return "physician/timetable";
     }
 
     @GetMapping("/timetable/delete")
@@ -118,14 +96,16 @@ public class PhysicianController {
     }
 
     @PostMapping("/search/active_substances")
-    public String searchForActiveSubstances(@RequestParam String searchValue, @RequestParam String pageNum, Model model) {
+    public String searchForActiveSubstances(@RequestParam String searchValue, @RequestParam String pageNum, Model
+            model) {
         String baseUri = "https://api.nfz.gov.pl/app-stat-api-ra/active-substances?page=";
         callNFZApi(searchValue, pageNum, model, baseUri);
         return "physician/search_result_active_substances";
     }
 
     @PostMapping("/search/medicine_products")
-    public String searchForMedicineProducts(@RequestParam String searchValue, @RequestParam String pageNum, Model model) {
+    public String searchForMedicineProducts(@RequestParam String searchValue, @RequestParam String pageNum, Model
+            model) {
         String baseUri = "https://api.nfz.gov.pl/app-stat-api-ra/medicine-products?page=";
         callNFZApi(searchValue, pageNum, model, baseUri);
         return "physician/search_result_medicine_products";
