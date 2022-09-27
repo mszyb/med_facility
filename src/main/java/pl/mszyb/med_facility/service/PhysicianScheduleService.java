@@ -4,10 +4,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.mszyb.med_facility.entity.Appointment;
 import pl.mszyb.med_facility.entity.PhysicianSchedule;
+import pl.mszyb.med_facility.entity.User;
 import pl.mszyb.med_facility.repository.PhysicianScheduleRepository;
 
-import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -50,11 +50,37 @@ public class PhysicianScheduleService {
         return availableSlots;
     }
 
-    public void deleteById(long id){
+    public void deleteById(long id) {
         physicianScheduleRepository.deleteById(id);
     }
 
-    public PhysicianSchedule findById(long id){
+    public PhysicianSchedule findById(long id) {
         return physicianScheduleRepository.findById(id);
+    }
+
+    public void addNewShift(LocalDate date, LocalTime startTime, LocalTime endTime, User currentUser) {
+        if (startTime.isAfter(endTime) || startTime.equals(endTime)) {
+            throw new IllegalArgumentException("Wrong start or/and end time");
+        }
+        ZonedDateTime startDateTime = startTime.atDate(date).atZone(ZoneId.of("Europe/Warsaw"));
+        ZonedDateTime endDateTime = endTime.atDate(date).atZone(ZoneId.of("Europe/Warsaw"));
+        List<PhysicianSchedule> currentUserSchedule = findAllByPhysicianIdForSelectedPeriod(currentUser.getId());
+        for (PhysicianSchedule schedule : currentUserSchedule) {
+            if (date.equals(schedule.getStartTime().toLocalDate())) {
+                ZonedDateTime shiftStart = schedule.getStartTime();
+                ZonedDateTime shiftEnd = schedule.getEndTime();
+                if (startDateTime.isBefore(shiftStart) && endDateTime.isBefore(shiftEnd) && endDateTime.isAfter(shiftStart) || startDateTime.isBefore(shiftStart) && endDateTime.isAfter(shiftEnd) || (startDateTime.isAfter(shiftStart) || startDateTime.equals(shiftStart)) && startDateTime.isBefore(shiftEnd) && (endDateTime.isAfter(shiftEnd) || endDateTime.equals(shiftEnd)) || (startDateTime.isAfter(shiftStart) || startDateTime.equals(shiftStart)) && (endDateTime.isBefore(shiftEnd) || endDateTime.equals(shiftEnd))) {
+                    throw new IllegalArgumentException("Shifts cannot overlaps");
+                }
+            }
+        }
+        if ((!(startTime.getMinute() == 30 || startTime.getMinute() == 0)) || (!(endTime.getMinute() == 30 || endTime.getMinute() == 0))) {
+            throw new IllegalArgumentException("You can only select full or half hours");
+        }
+        PhysicianSchedule physicianSchedule = new PhysicianSchedule();
+        physicianSchedule.setPhysician(currentUser);
+        physicianSchedule.setStartTime(startDateTime);
+        physicianSchedule.setEndTime(endDateTime);
+        save(physicianSchedule);
     }
 }

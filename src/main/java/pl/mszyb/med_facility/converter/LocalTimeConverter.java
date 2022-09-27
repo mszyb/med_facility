@@ -8,7 +8,6 @@ import java.time.format.DateTimeFormatter;
 
 @Component
 public class LocalTimeConverter implements Converter<String, LocalTime> {
-
     @Override
     public LocalTime convert(String source) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
