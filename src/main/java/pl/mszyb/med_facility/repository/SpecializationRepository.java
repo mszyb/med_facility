@@ -10,8 +10,10 @@ import java.util.Optional;
 public interface SpecializationRepository extends JpaRepository<Specialization, Long> {
     @Query("select s from Specialization s where s.name=?1")
     Specialization findByName(String name);
+
     @Query("select s from Specialization s where s.id=?1")
     Optional<Specialization> findById(Long id);
+
     @Query("select s from Specialization s where s.isActive = true")
     List<Specialization> findAllActive();
 }

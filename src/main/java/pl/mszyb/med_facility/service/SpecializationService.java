@@ -21,14 +21,16 @@ public class SpecializationService {
         return specializationRepository.findAllActive();
     }
 
-    public List<Specialization> findAll(){
+    public List<Specialization> findAll() {
         return specializationRepository.findAll();
     }
+
     public void deactivate(long id) {
         Specialization specialization = specializationRepository.findById(id).orElseThrow(NoSuchElementException::new);
         specialization.setActive(false);
         specializationRepository.save(specialization);
     }
+
     public void activate(long id) {
         Specialization specialization = specializationRepository.findById(id).orElseThrow(NoSuchElementException::new);
         specialization.setActive(true);
@@ -43,7 +45,7 @@ public class SpecializationService {
         return specializationRepository.findByName(name);
     }
 
-    public Optional<Specialization> findById(Long id){
+    public Optional<Specialization> findById(Long id) {
         return specializationRepository.findById(id);
     }
 }

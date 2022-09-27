@@ -50,15 +50,15 @@ public class PhysicianScheduleService {
         return availableSlots;
     }
 
-    public void deleteById(long id){
+    public void deleteById(long id) {
         physicianScheduleRepository.deleteById(id);
     }
 
-    public PhysicianSchedule findById(long id){
+    public PhysicianSchedule findById(long id) {
         return physicianScheduleRepository.findById(id);
     }
 
-    public void addNewShift(LocalDate date, LocalTime startTime, LocalTime endTime, User currentUser){
+    public void addNewShift(LocalDate date, LocalTime startTime, LocalTime endTime, User currentUser) {
         if (startTime.isAfter(endTime) || startTime.equals(endTime)) {
             throw new IllegalArgumentException("Wrong start or/and end time");
         }
@@ -74,7 +74,7 @@ public class PhysicianScheduleService {
                 }
             }
         }
-        if ((!(startTime.getMinute() == 30 || startTime.getMinute() == 0)) || (!(endTime.getMinute() == 30 || endTime.getMinute() == 0)) ) {
+        if ((!(startTime.getMinute() == 30 || startTime.getMinute() == 0)) || (!(endTime.getMinute() == 30 || endTime.getMinute() == 0))) {
             throw new IllegalArgumentException("You can only select full or half hours");
         }
         PhysicianSchedule physicianSchedule = new PhysicianSchedule();
