@@ -69,4 +69,14 @@ public class AppointmentService {
         ZonedDateTime endDateTime = LocalTime.of(23, 59).atDate(date).atZone(ZoneId.of("Europe/Warsaw"));
         return findAllByPatientIdForSelectedPeriod(patient.getId(), endDateTime, startDateTime);
     }
+
+    public void markAppointmentAsFinished(long appointmentId){
+        if (appointmentId != 0) {
+            Appointment appointment = findById(appointmentId);
+            if (appointment != null) {
+                appointment.setDone(true);
+                save(appointment);
+            }
+        }
+    }
 }

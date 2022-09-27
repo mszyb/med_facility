@@ -12,6 +12,7 @@ import pl.mszyb.med_facility.entity.Appointment;
 import pl.mszyb.med_facility.entity.PhysicianSchedule;
 import pl.mszyb.med_facility.entity.User;
 import pl.mszyb.med_facility.service.AppointmentService;
+import pl.mszyb.med_facility.service.NfzApiService;
 import pl.mszyb.med_facility.service.PhysicianScheduleService;
 
 import java.time.*;
@@ -26,6 +27,9 @@ public class PhysicianController {
 
     private final AppointmentService appointmentService;
     private final PhysicianScheduleService physicianScheduleService;
+    private final NfzApiService nfzApiService;
+    private static final String BASE_ACTIVE_SUBSTANCES_URL = "https://api.nfz.gov.pl/app-stat-api-ra/active-substances?page=";
+    private static final String BASE_MEDICINE_PRODUCTS_URL = "https://api.nfz.gov.pl/app-stat-api-ra/medicine-products?page=";
 
     @ModelAttribute("currentUser")
     public User getCurrentUser() {
@@ -83,43 +87,23 @@ public class PhysicianController {
         return "physician/timetable_delete_confirmation";
     }
 
-    public void callNFZApi(String searchValue, String pageNum, Model model, String baseUri) {
-        if (Integer.parseInt(pageNum) < 1) {
-            pageNum = "1";
-        }
-        String uri = baseUri + pageNum + "&limit=10&format=json&name=" + searchValue;
-        RestTemplate restTemplate = new RestTemplate();
-        JsonActiveSubstancesResponseDto jsonString = restTemplate.getForObject(uri, JsonActiveSubstancesResponseDto.class);
-        model.addAttribute("pageNum", pageNum);
-        model.addAttribute("searchValue", searchValue);
-        model.addAttribute("apiResponse", jsonString);
-    }
-
     @PostMapping("/search/active_substances")
     public String searchForActiveSubstances(@RequestParam String searchValue, @RequestParam String pageNum, Model
             model) {
-        String baseUri = "https://api.nfz.gov.pl/app-stat-api-ra/active-substances?page=";
-        callNFZApi(searchValue, pageNum, model, baseUri);
+        nfzApiService.callNFZApi(searchValue, pageNum, model, BASE_ACTIVE_SUBSTANCES_URL);
         return "physician/search_result_active_substances";
     }
 
     @PostMapping("/search/medicine_products")
     public String searchForMedicineProducts(@RequestParam String searchValue, @RequestParam String pageNum, Model
             model) {
-        String baseUri = "https://api.nfz.gov.pl/app-stat-api-ra/medicine-products?page=";
-        callNFZApi(searchValue, pageNum, model, baseUri);
+        nfzApiService.callNFZApi(searchValue, pageNum, model, BASE_MEDICINE_PRODUCTS_URL);
         return "physician/search_result_medicine_products";
     }
 
     @GetMapping("appointment/done")
     public String markAppointmentAsFinished(@RequestParam(defaultValue = "0") long appointmentId) {
-        if (appointmentId != 0) {
-            Appointment appointment = appointmentService.findById(appointmentId);
-            if (appointment != null) {
-                appointment.setDone(true);
-                appointmentService.save(appointment);
-            }
-        }
+        appointmentService.markAppointmentAsFinished(appointmentId);
         return "redirect:/doc/homepage";
     }
 
