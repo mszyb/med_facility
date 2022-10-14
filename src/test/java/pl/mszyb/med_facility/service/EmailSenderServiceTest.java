@@ -21,6 +21,10 @@ import static org.mockito.BDDMockito.given;
 @ExtendWith(MockitoExtension.class)
 class EmailSenderServiceTest {
 
+    private static final String SUBJECT = "some_subject";
+    private static final String FROM = "some_from";
+    private static final String TEXT = "some_text";
+
     @Mock
     private ConfirmationTokenService confirmationTokenService;
     @Mock
@@ -28,15 +32,13 @@ class EmailSenderServiceTest {
     @InjectMocks
     private EmailSenderService emailSenderService;
     private User someUser;
-    private final String subject = "some_subject";
-    private final String from = "some_from";
-    private final String text = "some_text";
+
 
     @BeforeEach
     void setUp(){
-        given(messageSource.getMessage("mail.subject", null, Locale.ENGLISH)).willReturn(subject);
-        given(messageSource.getMessage("mail.from", null, Locale.ENGLISH)).willReturn(from);
-        given(messageSource.getMessage("mail.text", null, Locale.ENGLISH)).willReturn(text);
+        given(messageSource.getMessage("mail.subject", null, Locale.ENGLISH)).willReturn(SUBJECT);
+        given(messageSource.getMessage("mail.from", null, Locale.ENGLISH)).willReturn(FROM);
+        given(messageSource.getMessage("mail.text", null, Locale.ENGLISH)).willReturn(TEXT);
     }
     @Test
     void should_create_registration_message() {
@@ -44,9 +46,9 @@ class EmailSenderServiceTest {
         someUser.setEmail("some-email");
         SimpleMailMessage returnedMessage = emailSenderService.createRegistrationMail(someUser);
         assertNotNull(returnedMessage);
-        assertEquals(subject, returnedMessage.getSubject());
-        assertEquals(from, returnedMessage.getFrom());
-        assertNotEquals(text, returnedMessage.getText());
-        assertTrue(Objects.requireNonNull(returnedMessage.getText()).contains(text));
+        assertEquals(SUBJECT, returnedMessage.getSubject());
+        assertEquals(FROM, returnedMessage.getFrom());
+        assertNotEquals(TEXT, returnedMessage.getText());
+        assertTrue(Objects.requireNonNull(returnedMessage.getText()).contains(TEXT));
     }
 }
