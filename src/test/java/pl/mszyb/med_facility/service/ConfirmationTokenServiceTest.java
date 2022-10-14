@@ -18,14 +18,13 @@ import static org.mockito.BDDMockito.given;
 class ConfirmationTokenServiceTest {
 
     @Mock
-    UserService userService;
+    private UserService userService;
 
     @Mock
-    RoleService roleService;
+    private RoleService roleService;
 
     @InjectMocks
-    ConfirmationTokenService confirmationTokenService;
-
+    private ConfirmationTokenService confirmationTokenService;
     private final Long userId = new Random().nextLong();
     private final User someUser = new User();
     private final Role someRole = new Role();
