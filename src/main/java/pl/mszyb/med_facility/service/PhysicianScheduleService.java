@@ -69,7 +69,10 @@ public class PhysicianScheduleService {
             if (date.equals(schedule.getStartTime().toLocalDate())) {
                 ZonedDateTime shiftStart = schedule.getStartTime();
                 ZonedDateTime shiftEnd = schedule.getEndTime();
-                if (startDateTime.isBefore(shiftStart) && endDateTime.isBefore(shiftEnd) && endDateTime.isAfter(shiftStart) || startDateTime.isBefore(shiftStart) && endDateTime.isAfter(shiftEnd) || (startDateTime.isAfter(shiftStart) || startDateTime.equals(shiftStart)) && startDateTime.isBefore(shiftEnd) && (endDateTime.isAfter(shiftEnd) || endDateTime.equals(shiftEnd)) || (startDateTime.isAfter(shiftStart) || startDateTime.equals(shiftStart)) && (endDateTime.isBefore(shiftEnd) || endDateTime.equals(shiftEnd))) {
+                if (startDateTime.isBefore(shiftStart) && endDateTime.isBefore(shiftEnd) && endDateTime.isAfter(shiftStart)
+                        || startDateTime.isBefore(shiftStart) && endDateTime.isAfter(shiftEnd)
+                        || (startDateTime.isAfter(shiftStart) || startDateTime.equals(shiftStart)) && startDateTime.isBefore(shiftEnd) && (endDateTime.isAfter(shiftEnd) || endDateTime.equals(shiftEnd))
+                        || (startDateTime.isAfter(shiftStart) || startDateTime.equals(shiftStart)) && (endDateTime.isBefore(shiftEnd) || endDateTime.equals(shiftEnd))) {
                     throw new IllegalArgumentException("Shifts cannot overlaps");
                 }
             }

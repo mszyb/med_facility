@@ -12,9 +12,8 @@ import pl.mszyb.med_facility.entity.ServiceType;
 import pl.mszyb.med_facility.entity.User;
 import pl.mszyb.med_facility.repository.PhysicianScheduleRepository;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,19 +25,22 @@ import static org.mockito.BDDMockito.given;
 @ExtendWith(MockitoExtension.class)
 class PhysicianScheduleServiceTest {
 
+    private static final String WRONG_START_END_TIME_MSG = "Wrong start or/and end time";
+    private static final String SHIFTS_OVERLAPS_MSG = "Shifts cannot overlaps";
+    private static final String FULL_HALF_HOUR_MSG = "You can only select full or half hours";
     @Mock
     PhysicianScheduleRepository physicianScheduleRepository;
     @Mock
     AppointmentService appointmentService;
     @InjectMocks
     PhysicianScheduleService physicianScheduleService;
-    List<PhysicianSchedule> physicianScheduleList;
-    List<Appointment> physicianAppointmentsList;
-    ZoneId zone = ZoneId.of("Europe/Warsaw");
-    ZonedDateTime startTime = ZonedDateTime.now(zone).plusMinutes(10);
-    User physician;
-    User patient;
-    Appointment appointment;
+    private List<PhysicianSchedule> physicianScheduleList;
+    private List<Appointment> physicianAppointmentsList;
+    private ZoneId zone = ZoneId.of("Europe/Warsaw");
+    private ZonedDateTime startTime = ZonedDateTime.now(zone).plusMinutes(10);
+    private User physician;
+    private User patient;
+    private Appointment appointment;
 
 
     @BeforeEach
@@ -70,6 +72,27 @@ class PhysicianScheduleServiceTest {
         List<ZonedDateTime> availableSlots = physicianScheduleService.calculateAvailableSlots(physician.getId());
         assertNotNull(availableSlots);
         assertEquals(0, availableSlots.size());
+    }
+
+    @Test
+    void should_throw_illegal_argument_exception(){
+        given(physicianScheduleRepository.findAllByPhysicianIdForSelectedPeriod(eq(physician.getId()), any(), any())).willReturn(physicianScheduleList);
+        IllegalArgumentException exception;
+
+        LocalTime startTestTime = LocalTime.now();
+        exception = assertThrows(IllegalArgumentException.class, () -> physicianScheduleService.addNewShift(LocalDate.now(), startTestTime.plusHours(1), startTestTime, physician));
+        assertEquals(WRONG_START_END_TIME_MSG, exception.getMessage());
+        assertThrows(IllegalArgumentException.class, () -> physicianScheduleService.addNewShift(LocalDate.now(), startTestTime, startTestTime, physician));
+        exception = assertThrows(IllegalArgumentException.class, () -> physicianScheduleService.addNewShift(LocalDate.now(), startTestTime, startTestTime.plusMinutes(30), physician));
+        assertEquals(SHIFTS_OVERLAPS_MSG, exception.getMessage());
+        assertThrows(IllegalArgumentException.class, () -> physicianScheduleService.addNewShift(LocalDate.now(), startTestTime, startTestTime.plusHours(5), physician));
+        assertThrows(IllegalArgumentException.class, () -> physicianScheduleService.addNewShift(LocalDate.now(), startTestTime.plusMinutes(10), startTestTime.plusHours(5), physician));
+        assertThrows(IllegalArgumentException.class, () -> physicianScheduleService.addNewShift(LocalDate.now(), startTestTime.plusMinutes(15), startTestTime.plusHours(5), physician));
+        assertThrows(IllegalArgumentException.class, () -> physicianScheduleService.addNewShift(LocalDate.now(), startTestTime.plusMinutes(15), startTestTime.plusMinutes(10).plusHours(4), physician));
+        assertThrows(IllegalArgumentException.class, () -> physicianScheduleService.addNewShift(LocalDate.now(), startTestTime.plusMinutes(10), startTestTime.plusMinutes(15), physician));
+        assertThrows(IllegalArgumentException.class, () -> physicianScheduleService.addNewShift(LocalDate.now(), startTestTime.plusMinutes(15), startTestTime.plusMinutes(15), physician));
+        exception = assertThrows(IllegalArgumentException.class, () -> physicianScheduleService.addNewShift(LocalDate.now(), LocalTime.of(10,13,0), LocalTime.of(10,43,0), physician));
+        assertEquals(FULL_HALF_HOUR_MSG, exception.getMessage());
     }
 
     private List<PhysicianSchedule> preparePhysicianScheduleWith14Slots() {
