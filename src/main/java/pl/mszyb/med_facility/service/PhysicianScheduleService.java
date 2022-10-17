@@ -39,7 +39,7 @@ public class PhysicianScheduleService {
         }
         for (PhysicianSchedule schedule : physicianSchedule) {
             ZonedDateTime slot = schedule.getStartTime();
-            while (slot.isBefore(schedule.getEndTime())) {
+            while (slot.plusMinutes(30).isBefore(schedule.getEndTime())) {
                 if (!alreadyOccupiedSlots.contains(slot) && slot.isAfter(ZonedDateTime.now())) {
                     availableSlots.add(slot);
                 }

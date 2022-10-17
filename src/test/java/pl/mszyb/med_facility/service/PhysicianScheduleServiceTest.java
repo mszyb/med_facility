@@ -35,52 +35,68 @@ class PhysicianScheduleServiceTest {
     List<PhysicianSchedule> physicianScheduleList;
     List<Appointment> physicianAppointmentsList;
     ZoneId zone = ZoneId.of("Europe/Warsaw");
-    ZonedDateTime startTime = ZonedDateTime.now(zone);
+    ZonedDateTime startTime = ZonedDateTime.now(zone).plusMinutes(10);
     User physician;
     User patient;
     Appointment appointment;
 
 
-
     @BeforeEach
     void setUp() {
-        physicianScheduleList = preparePhysicianSchedule();
-        physicianAppointmentsList = prepareAppointmentList();
+        physicianScheduleList = preparePhysicianScheduleWith14Slots();
+        physicianAppointmentsList = prepareAppointmentListWith3Appointments();
     }
 
     @Test
-    void should_calculate_13_available_slots() {
+    void should_calculate_11_available_slots() {
         given(physicianScheduleRepository.findAllByPhysicianIdForSelectedPeriod(eq(physician.getId()), any(), any())).willReturn(physicianScheduleList);
         given(appointmentService.findAllByPhysicianIdForSelectedPeriod(eq(physician.getId()), any(), any())).willReturn(physicianAppointmentsList);
         List<ZonedDateTime> availableSlots = physicianScheduleService.calculateAvailableSlots(physician.getId());
-        assertEquals(13, availableSlots.size());
+        assertEquals(11, availableSlots.size());
     }
 
-    private List<PhysicianSchedule> preparePhysicianSchedule() {
+    @Test
+    void should_calculate_14_available_slots() {
+        given(physicianScheduleRepository.findAllByPhysicianIdForSelectedPeriod(eq(physician.getId()), any(), any())).willReturn(physicianScheduleList);
+        given(appointmentService.findAllByPhysicianIdForSelectedPeriod(eq(physician.getId()), any(), any())).willReturn(new ArrayList<>());
+        List<ZonedDateTime> availableSlots = physicianScheduleService.calculateAvailableSlots(physician.getId());
+        assertEquals(14, availableSlots.size());
+    }
+
+    @Test
+    void should_calculate_0_available_slots() {
+        given(physicianScheduleRepository.findAllByPhysicianIdForSelectedPeriod(eq(physician.getId()), any(), any())).willReturn(new ArrayList<>());
+        given(appointmentService.findAllByPhysicianIdForSelectedPeriod(eq(physician.getId()), any(), any())).willReturn(new ArrayList<>());
+        List<ZonedDateTime> availableSlots = physicianScheduleService.calculateAvailableSlots(physician.getId());
+        assertNotNull(availableSlots);
+        assertEquals(0, availableSlots.size());
+    }
+
+    private List<PhysicianSchedule> preparePhysicianScheduleWith14Slots() {
         physicianScheduleList = new ArrayList<>();
         physician = new User();
         physician.setId(1L);
         ZonedDateTime testStartTime = startTime;
         for (int i = 0; i < 2; i++) {
             PhysicianSchedule physicianSchedule = new PhysicianSchedule();
-            physicianSchedule.setId((long)i);
+            physicianSchedule.setId((long) i);
             physicianSchedule.setPhysician(physician);
             physicianSchedule.setStartTime(testStartTime);
             physicianSchedule.setEndTime(testStartTime.plusHours(4));
             physicianScheduleList.add(physicianSchedule);
-            testStartTime = startTime.plusDays(i+1);
+            testStartTime = startTime.plusDays(i + 1);
         }
         return physicianScheduleList;
     }
 
-    private List<Appointment> prepareAppointmentList() {
+    private List<Appointment> prepareAppointmentListWith3Appointments() {
         physicianAppointmentsList = new ArrayList<>();
         patient = new User();
         patient.setId(1L);
         ZonedDateTime testStartTime = startTime;
-        for(int i=0; i<3; i++){
+        for (int i = 0; i < 3; i++) {
             appointment = new Appointment();
-            appointment.setId((long)i);
+            appointment.setId((long) i);
             appointment.setPhysician(physician);
             appointment.setDone(false);
             appointment.setPatient(patient);
@@ -89,8 +105,8 @@ class PhysicianScheduleServiceTest {
             appointment.setSelectedService(null);
             appointment.setSelectedSpec(null);
             physicianAppointmentsList.add(appointment);
-            testStartTime=startTime.plusHours(i+1);
+            testStartTime = startTime.plusHours(i + 1);
         }
-    return physicianAppointmentsList;
+        return physicianAppointmentsList;
     }
 }
