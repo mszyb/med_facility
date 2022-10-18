@@ -35,6 +35,7 @@ class ServiceTypeServiceTest {
     void should_activate_service() {
         given(repository.findById(anyLong())).willReturn(Optional.of(service));
         service.setActive(false);
+        assertFalse(service.isActive());
         serviceTypeService.activate(service.getId());
         assertTrue(service.isActive());
     }
@@ -43,6 +44,7 @@ class ServiceTypeServiceTest {
     void should_deactivate_service() {
         given(repository.findById(anyLong())).willReturn(Optional.of(service));
         service.setActive(true);
+        assertTrue(service.isActive());
         serviceTypeService.deactivate(service.getId());
         assertFalse(service.isActive());
     }
