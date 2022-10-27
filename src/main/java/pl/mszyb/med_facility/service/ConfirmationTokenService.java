@@ -11,6 +11,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class ConfirmationTokenService {
+
     private final ConfirmationTokenRepository confirmationTokenRepository;
     private final UserService userService;
     private final RoleService roleService;
@@ -21,10 +22,6 @@ public class ConfirmationTokenService {
 
     public ConfirmationToken findByConfirmationToken(String confirmationToken){
         return confirmationTokenRepository.findByConfirmationToken(confirmationToken);
-    }
-
-    public void deleteByConfirmationToken(String confirmationToken){
-        confirmationTokenRepository.deleteByConfirmationToken(confirmationToken);
     }
 
     public void confirmUserEmail(ConfirmationToken tokenFromDb){

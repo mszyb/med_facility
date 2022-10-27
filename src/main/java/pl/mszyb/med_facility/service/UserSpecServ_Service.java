@@ -16,21 +16,10 @@ import java.util.*;
 public class UserSpecServ_Service {
 
     private final UserServicesSpecializationsRepository userServicesSpecializationsRepository;
-    private final SpecializationRepository specializationRepository;
     private final PhysicianScheduleService physicianScheduleService;
     private final SpecializationService specializationService;
     private final ServiceTypeService serviceTypeService;
 
-
-    public List<Specialization> findSpecializationsForUserId(long id) {
-        List<Long> identifiers = userServicesSpecializationsRepository.findSpecializationForUserId(id);
-        List<Specialization> userSpecializations = new ArrayList<>();
-        for (Long specId : identifiers) {
-            Optional<Specialization> us = specializationRepository.findById(specId);
-            us.ifPresent(userSpecializations::add);
-        }
-        return userSpecializations;
-    }
 
     public Map<Specialization, List<ServiceType>> findSpecializationsAndServicesForUserId(Long id) {
         List<UserServicesSpecializations> servicesAndSpecializations = userServicesSpecializationsRepository.findServicesBySpecializationsForUserId(id);

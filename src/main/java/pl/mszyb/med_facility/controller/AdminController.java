@@ -31,8 +31,6 @@ public class AdminController {
     private final ServiceTypeService serviceTypeService;
     private final AppointmentService appointmentService;
 
-    private final PhysicianScheduleService physicianScheduleService;
-
     @ModelAttribute("roles")
     public Collection<Role> roleList() {
         return roleService.findAll();
