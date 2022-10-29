@@ -73,7 +73,7 @@ MAIL_PASSWORD=
 ![alt text](screenshots/screen4.png)
 ![alt text](screenshots/screen5.png)
 ![alt text](screenshots/screen6.png)
-![alt text](screenshots/screen7.png)
+![alt text](screenshots/screen7a.png)
 ![alt text](screenshots/screen8.png)
 ![alt text](screenshots/screen9.png)
 
