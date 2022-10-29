@@ -67,34 +67,34 @@ MAIL_USERNAME= \
 MAIL_PASSWORD= 
 
 ## Screenshots
-- main page
-![alt text](screenshots/screen1.png)
+- main page  
+![alt text](screenshots/screen1.png)  
 
-- loggin page
-![alt text](screenshots/screen2.png)
+- loggin page  
+![alt text](screenshots/screen2.png)  
 
-- registration page
-![alt text](screenshots/screen6.png)
+- registration page  
+![alt text](screenshots/screen6.png)  
 
-- admin dashboard
-![alt text](screenshots/screen3.png)
+- admin dashboard  
+![alt text](screenshots/screen3.png)  
 
-- admin appointment search result
-![alt text](screenshots/screen4.png)
+- admin appointment search result  
+![alt text](screenshots/screen4.png)  
 
-- admin physician edition page
-![alt text](screenshots/screen5.png)
+- admin physician edition page  
+![alt text](screenshots/screen5.png)  
 
-- user main page
-![alt text](screenshots/screen8.png)
+- user main page  
+![alt text](screenshots/screen8.png)  
 
-- user service search result
-![alt text](screenshots/screen7a.png)
+- user service search result  
+![alt text](screenshots/screen7a.png)  
 
-- physician main page
-![alt text](screenshots/screen9.png)
+- physician main page  
+![alt text](screenshots/screen9.png)  
 
-- physician timetable adding page
-![alt text](screenshots/screen10.png)
+- physician timetable adding page  
+![alt text](screenshots/screen10.png)  
 
 
