@@ -20,7 +20,7 @@ App was build as a final project for Java Coders Lab course.
 ## Main functionalities
 Not authorized users are capable of accessing only main page, logging page and registration page. Authentication is managed by Spring Security.
 
-After creating an account, activation link is sent from email provided in application.properties to an email address provided during registration. Before accessing this link account is consider as not-activated.
+After creating an account, activation link is send from email provided in application.properties to an email address provided during registration. Before accessing this link account is consider as not-activated.
 
 Users are basically divided into 3 roles: USER, PHYSICIAN and ADMIN. 
 Program delivers various functionalities, depending on user role: 
