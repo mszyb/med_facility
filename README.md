@@ -2,7 +2,7 @@
 
 This project provides functional app for administrators, physicians and patients of hypothetical medical facility. 
 ## Purpose
-Project was build as a final project for Java Coders Lab course.
+App was build as a final project for Java Coders Lab course.
 
 ## Technologies
 - Java 18
